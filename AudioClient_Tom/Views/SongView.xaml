@@ -1,0 +1,81 @@
+﻿<UserControl
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:AudioClient_Tom.Views"
+             xmlns:s="clr-namespace:System;assembly=mscorlib"
+             xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
+             xmlns:viewModels="clr-namespace:AudioClient_Tom.ViewModels"
+             x:Class="AudioClient_Tom.Views.SongView"
+             mc:Ignorable="d" 
+             d:DesignHeight="365" d:DesignWidth="495" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+
+
+    <UserControl.DataContext>
+        <viewModels:SongCollectionViewModel/>
+    </UserControl.DataContext>
+
+    <Grid Background="#FF1E1E1E" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" SizeChanged="Grid_SizeChanged">
+
+        <ListView 
+			x:Name="SongItems" 
+			ItemsSource="{Binding FilteredCollection}"
+			VerticalContentAlignment="Stretch"
+			HorizontalContentAlignment="Stretch"
+			BorderBrush="{x:Null}" Background="{x:Null}"
+            Margin="20,68,20,30"
+            Foreground="White" 
+            FontFamily="Yu Gothic UI Light"  
+            Style="{StaticResource ResourceKey=MusicCollectionStyle}" 
+            ItemContainerStyle="{StaticResource ResourceKey=MusicItemStyle}" >
+
+            <ListView.View>
+                <GridView>
+                    <GridViewColumn x:Name="SongTitleHeader" Width="250" Header="Song Title"  DisplayMemberBinding="{Binding SongTitle}" />
+                    <GridViewColumn x:Name="ArtistTitleHeader" Width="150" Header="Artist Name" DisplayMemberBinding="{Binding ArtistName}" />
+                    <GridViewColumn x:Name="LengthHeader" Width="150" Header="Length" DisplayMemberBinding="{Binding Length}" />
+                </GridView>
+            </ListView.View>
+        </ListView>
+
+
+        <Grid Height="22" Margin="20,32,20,0" VerticalAlignment="Top"  >
+            <!-- overlay with hint text -->
+            <TextBlock Margin="5,2" MinWidth="50" Text="Filter..." 
+                   Foreground="White" FontFamily="Yu Gothic UI Light" Visibility="{Binding ElementName=textBox, Path=Text.IsEmpty, Converter={StaticResource MyBoolToVisibilityConverter}}" />
+            <TextBox x:Name="textBox" Height="22" TextWrapping="Wrap" Text="" VerticalAlignment="Top" >
+                <i:Interaction.Triggers>
+                    <i:EventTrigger EventName="KeyUp">
+                        <i:InvokeCommandAction 
+                                    Command="{Binding DataContext.swapFilter,
+                                                      RelativeSource={RelativeSource AncestorType={x:Type TextBox}}}"
+                                    CommandParameter="{Binding ElementName=textBox, Path=Text}"/>
+                    </i:EventTrigger>
+
+                </i:Interaction.Triggers>
+
+                <TextBox.Style>
+                    <Style TargetType="{x:Type TextBox}">
+                        <Setter Property="Background" Value="Transparent" />
+                        <Setter Property="BorderBrush" Value="Transparent" />
+                        <Setter Property="Foreground" Value="White" />
+                        <Setter Property="FontFamily" Value="Yu Gothic UI Light" />
+                        <Style.Triggers>
+                            <Trigger Property="IsFocused" Value="True">
+                                <Setter Property="Foreground" Value="Black" />
+                                <Setter Property="Background" Value="White" />
+                            </Trigger>
+
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Foreground" Value="Black" />
+                                <Setter Property="Background" Value="White" />
+                            </Trigger>
+
+                        </Style.Triggers>
+                    </Style>
+                </TextBox.Style>
+            </TextBox>
+        </Grid>
+    </Grid>
+</UserControl>
