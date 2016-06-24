@@ -12,19 +12,26 @@ namespace AudioClient_Tom.ViewModels
     class SongCollectionViewModel : AbstractObservable
     {
 
+        // Converter to SongViewModel String.
+        public delegate String SongConvert(SongViewModel model);
+
         // A collection of songs. 
         private ObservableCollection<SongViewModel> mSongs;
+
+        // Converters.
+        private IDictionary<String, SongConvert> mConverters;
+
+        // Filters.
+        private IDictionary<String, IFilterOrganiser<string, string>> mFilters;
 
         // The String we'll filter by 
         private string mFilterString;
 
+        //The Key for The Delegate for the Converter.
+        private string mConverterKey;
 
-        // this is the Filter Organizer, by default this will use a fuzzy search. 
-        // Thought it can be replaced by something that filters by name only.
-        // or filtered by exact matches only. 
-        // or contained strings. 
-        // It's a very flexible system.
-        private IFilterOrganiser<SongViewModel, string> mSorter;
+        // The Current Filter Organiser 
+        private IFilterOrganiser<string, string> mFilter;
 
 
         /// <summary>
@@ -32,7 +39,6 @@ namespace AudioClient_Tom.ViewModels
         /// </summary>
         public SongCollectionViewModel()
         {
-            mSorter = new ContainsFilter();
             mSongs = new ObservableCollection<SongViewModel>();
             mSongs.Add(new SongViewModel { Song = new Models.Song(), SongTitle = "ABC_Song", ArtistName = "Shaft", LengthSeconds = 150 });
             mSongs.Add(new SongViewModel { Song = new Models.Song(), SongTitle = "CDE_Song", ArtistName = "Shaft", LengthSeconds = 150 });
@@ -40,12 +46,57 @@ namespace AudioClient_Tom.ViewModels
             mSongs.Add(new SongViewModel { Song = new Models.Song(), SongTitle = "IJK_SONG", ArtistName = "Shaft", LengthSeconds = 150 });
             mSongs.Add(new SongViewModel { Song = new Models.Song(), SongTitle = "LMN_Song", ArtistName = "Shaft", LengthSeconds = 150 });
             mSongs.Add(new SongViewModel { Song = new Models.Song(), SongTitle = "SpaceJam", ArtistName = "Shaft", LengthSeconds = 150 });
+
+            mConverters = new Dictionary<String, SongConvert>();
+            mConverters.Add("Song Title", e => e.SongTitle);
+            mConverters.Add("Artist Name", e => e.ArtistName);
+            mFilters = new Dictionary<String, IFilterOrganiser<string, string>>();
+            mFilters.Add("Exact Match", new ContainsFilter());
+            mFilters.Add("Fuzzy Match", new ContainsFilter());
+
+            CurrentFilter = mFilters["Exact Match"];
+            ConverterKey = "Song Title";
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public String ConverterKey
+        {
+            get
+            {
+                return mConverterKey;
+            }
+            set
+            {
+                mConverterKey = value;
+                FirePropertyChanged("FilteredCollection");
+            }
         }
 
 
+        /// <summary>
+        /// Returns the current filter to compare against. 
+        /// </summary>
+        public IFilterOrganiser<string, string> CurrentFilter
+        {
+            get
+            {
+                return mFilter;
+            }
 
-        //Get the filter. 
-        private string FilteredSongs
+            set
+            {
+                mFilter = value;
+                FirePropertyChanged("FilteredCollection");
+            }
+        }
+
+
+        /// <summary>
+        /// The String we're filtering the songs upon
+        /// </summary>
+        public string FilteredString
         {
             get
             {
@@ -58,26 +109,52 @@ namespace AudioClient_Tom.ViewModels
             }
         }
 
-        // Return the entire collection.
+        /// <summary>
+        /// The full Song Collection.
+        /// </summary>
         public ObservableCollection<SongViewModel> SongCollection
         {
             get { return mSongs; }
         }
 
-        // Filter the Collection using are Filter Organizer. 
-        public List<SongViewModel> FilteredCollection
+        /// <summary>
+        /// Dictionary of String Converters
+        /// </summary>
+        public IDictionary<String, SongConvert> SongConverters
         {
             get
             {
-                if (FilteredSongs == null || FilteredSongs.Equals(""))
+                return mConverters;
+            }
+        }
+
+        /// <summary>
+        /// A collection of String, and Filter Organiser.
+        /// </summary>
+        public IDictionary<String, IFilterOrganiser<string, string>> SongRankers
+        {
+            get
+            {
+                return mFilters;
+            }
+        }
+
+        /// <summary>
+        /// The Filtered Collection based on the Filtered String and Organisers etc.
+        /// </summary>
+        public ICollection<SongViewModel> FilteredCollection
+        {
+            get
+            {
+                if (FilteredString == null || FilteredString.Equals(""))
                 {
-                    return new List<SongViewModel>(SongCollection);
+                    return SongCollection;
                 }
                 else
                 {
                     //first create a lookup table of Key -> Filter Rank. 
                     //This enables us to cull things and rank things without having to rerun the algorithm.
-                    Dictionary<SongViewModel, int> songToRank = SongCollection.ToDictionary(k => k, v => mSorter.setFilterRank(v, mFilterString));
+                    Dictionary<SongViewModel, int> songToRank = SongCollection.ToDictionary(k => k, v => CurrentFilter.setFilterRank(mConverters[mConverterKey](v), mFilterString));
                     //Then use the lookup table to elimate any 0-ranked Keys. 
                     List<SongViewModel> retVal = new List<SongViewModel>(SongCollection.Where(key => (songToRank[key] != 0)));
 
@@ -99,30 +176,7 @@ namespace AudioClient_Tom.ViewModels
                     retVal.Sort(comp);
                     return retVal;
                 }
-
             }
         }
-
-        // Swap out the View
-        private void changeFilter(string filter)
-        {
-            FilteredSongs = filter;
-        }
-
-        //We can always execute this command.
-        private Boolean canSwap(string canFilter)
-        {
-            return true;
-        }
-
-        // the Command to use to swap out a Filter
-        public ICommand swapFilter
-        {
-            get
-            {
-                return new RelayCommand<String>(changeFilter, canSwap);
-            }
-        }
-
     }
 }

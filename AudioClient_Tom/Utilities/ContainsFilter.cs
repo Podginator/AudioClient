@@ -7,12 +7,11 @@ using System.Threading.Tasks;
 
 namespace AudioClient_Tom.Utilities
 {
-    public class ContainsFilter : IFilterOrganiser<ViewModels.SongViewModel, String>
+    public class ContainsFilter : IFilterOrganiser<String, String>
     {
-        public int setFilterRank(SongViewModel filterable, string filter)
+        public int setFilterRank(String filterable, string filter)
         {
-            String songTitle = filterable.SongTitle;
-            int indexOf = filterable.SongTitle.IndexOf(filter);
+            int indexOf = filterable.IndexOf(filter);
             if (indexOf > -1)
             {
                 return 100 - indexOf;

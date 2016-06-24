@@ -1,0 +1,10 @@
+*.suo
+AudioClient_Tom/bin/Debug/AudioClient_Tom.exe
+*.pdb
+AudioClient_Tom/obj/Debug/AudioClient_Tom.csproj.FileListAbsolute.txt
+*.cache
+AudioClient_Tom/obj/Debug/AudioClient_Tom.exe
+*.exe
+AudioClient_Tom/obj/Debug/AudioClient_Tom.exe
+AudioClient_Tom/obj/Debug/AudioClient_Tom.pdb
+*.baml
