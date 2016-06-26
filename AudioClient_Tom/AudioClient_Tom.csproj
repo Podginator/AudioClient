@@ -64,10 +64,16 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="EventAggregator\EventAggregator.cs" />
+    <Compile Include="EventAggregator\Event\FriendUpdateEvent.cs" />
     <Compile Include="Models\MenuItemModel.cs" />
     <Compile Include="Models\Songs.cs" />
     <Compile Include="Models\User.cs" />
+    <Compile Include="Networking\EventHandlers\IConnectedHandler.cs" />
+    <Compile Include="Networking\EventHandlers\IMessageReceiveHandler.cs" />
+    <Compile Include="Networking\IServer.cs" />
     <Compile Include="RelayCommand.cs" />
+    <Compile Include="Networking\SocketManager.cs" />
     <Compile Include="Utilities\AbstractObservable.cs" />
     <Compile Include="Utilities\ContainsFilter.cs" />
     <Compile Include="Utilities\IFilterOrganiser.cs" />
@@ -136,7 +142,9 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="PacketHandlers\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

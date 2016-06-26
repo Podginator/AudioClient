@@ -8,3 +8,8 @@ AudioClient_Tom/obj/Debug/AudioClient_Tom.exe
 AudioClient_Tom/obj/Debug/AudioClient_Tom.exe
 AudioClient_Tom/obj/Debug/AudioClient_Tom.pdb
 *.baml
+*.csproj
+.vs/AudioClient_Tom/v14/.suo
+*.exe
+AudioClient_Tom/bin/Debug/AudioClient_Tom.pdb
+*.cache

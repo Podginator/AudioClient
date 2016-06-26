@@ -24,3 +24,29 @@ c:\users\podgi\documents\visual studio 2015\Projects\AudioClient_Tom\AudioClient
 c:\users\podgi\documents\visual studio 2015\Projects\AudioClient_Tom\AudioClient_Tom\obj\Debug\Views\SongView.baml
 C:\Users\podgi\Documents\Visual Studio 2015\Projects\AudioClient_Tom\AudioClient_Tom\obj\Debug\Views\FriendView.g.cs
 C:\Users\podgi\Documents\Visual Studio 2015\Projects\AudioClient_Tom\AudioClient_Tom\obj\Debug\Views\FriendView.baml
+C:\Users\podgi\Documents\GitHub\AudioClient\AudioClient_Tom\bin\Debug\AudioClient_Tom.exe.config
+C:\Users\podgi\Documents\GitHub\AudioClient\AudioClient_Tom\obj\Debug\AudioClient_Tom.exe
+C:\Users\podgi\Documents\GitHub\AudioClient\AudioClient_Tom\obj\Debug\AudioClient_Tom.pdb
+C:\Users\podgi\Documents\GitHub\AudioClient\AudioClient_Tom\bin\Debug\AudioClient_Tom.exe
+C:\Users\podgi\Documents\GitHub\AudioClient\AudioClient_Tom\bin\Debug\AudioClient_Tom.pdb
+C:\Users\podgi\Documents\GitHub\AudioClient\AudioClient_Tom\bin\Debug\Microsoft.Expression.Interactions.dll
+C:\Users\podgi\Documents\GitHub\AudioClient\AudioClient_Tom\bin\Debug\System.Windows.Interactivity.dll
+C:\Users\podgi\Documents\GitHub\AudioClient\AudioClient_Tom\bin\Debug\Microsoft.Expression.Interactions.xml
+C:\Users\podgi\Documents\GitHub\AudioClient\AudioClient_Tom\bin\Debug\System.Windows.Interactivity.xml
+C:\Users\podgi\Documents\GitHub\AudioClient\AudioClient_Tom\obj\Debug\AudioClient_Tom.csprojResolveAssemblyReference.cache
+C:\Users\podgi\Documents\GitHub\AudioClient\AudioClient_Tom\obj\Debug\MainWindow.g.cs
+C:\Users\podgi\Documents\GitHub\AudioClient\AudioClient_Tom\obj\Debug\Views\FriendView.g.cs
+C:\Users\podgi\Documents\GitHub\AudioClient\AudioClient_Tom\obj\Debug\Views\HomeView.g.cs
+C:\Users\podgi\Documents\GitHub\AudioClient\AudioClient_Tom\obj\Debug\Views\SongView.g.cs
+C:\Users\podgi\Documents\GitHub\AudioClient\AudioClient_Tom\obj\Debug\App.g.cs
+C:\Users\podgi\Documents\GitHub\AudioClient\AudioClient_Tom\obj\Debug\GeneratedInternalTypeHelper.g.cs
+C:\Users\podgi\Documents\GitHub\AudioClient\AudioClient_Tom\obj\Debug\AudioClient_Tom_MarkupCompile.cache
+C:\Users\podgi\Documents\GitHub\AudioClient\AudioClient_Tom\obj\Debug\AudioClient_Tom_MarkupCompile.lref
+C:\Users\podgi\Documents\GitHub\AudioClient\AudioClient_Tom\obj\Debug\App.baml
+C:\Users\podgi\Documents\GitHub\AudioClient\AudioClient_Tom\obj\Debug\MainWindow.baml
+C:\Users\podgi\Documents\GitHub\AudioClient\AudioClient_Tom\obj\Debug\Views\FriendView.baml
+C:\Users\podgi\Documents\GitHub\AudioClient\AudioClient_Tom\obj\Debug\Views\HomeView.baml
+C:\Users\podgi\Documents\GitHub\AudioClient\AudioClient_Tom\obj\Debug\Views\SongView.baml
+C:\Users\podgi\Documents\GitHub\AudioClient\AudioClient_Tom\obj\Debug\AudioClient_Tom.g.resources
+C:\Users\podgi\Documents\GitHub\AudioClient\AudioClient_Tom\obj\Debug\AudioClient_Tom.Properties.Resources.resources
+C:\Users\podgi\Documents\GitHub\AudioClient\AudioClient_Tom\obj\Debug\AudioClient_Tom.csproj.GenerateResource.Cache

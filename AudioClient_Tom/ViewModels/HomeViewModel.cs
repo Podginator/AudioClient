@@ -32,6 +32,10 @@ namespace AudioClient_Tom.ViewModels
             mItems.Add(new MenuItemModel { Name = "Friends", Control = new Button() });
             mItems.Add(new MenuItemModel { Name = "Most Popular", Control = new Button() });
             swapViewModel(mItems[0]);
+
+            EventAggregator.EventAggregator.Instace.RegisterListener<SongViewModel>(e => {
+                CurrentlySelected = e.ArtistName;
+            });
         }
 
 

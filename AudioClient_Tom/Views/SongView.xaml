@@ -21,7 +21,7 @@
                 </Setter.Value>
             </Setter>
         </Style>
-        <SolidColorBrush x:Key="ComboBox.Static.Background" Color="White" Opacity="0.2"/>
+        <SolidColorBrush x:Key="ComboBox.Static.Background" Color="White" Opacity="0"/>
         <SolidColorBrush x:Key="ComboBox.Static.Border" Color="Transparent"/>
         <SolidColorBrush x:Key="ComboBox.Static.Editable.Background" Color="White" Opacity="0.75"/>
         <SolidColorBrush x:Key="ComboBox.Static.Editable.Border" Color="Transparent"/>
@@ -147,7 +147,7 @@
                 <Popup x:Name="PART_Popup" AllowsTransparency="true" Grid.ColumnSpan="2" IsOpen="{Binding IsDropDownOpen, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}" Margin="1" PopupAnimation="{DynamicResource {x:Static SystemParameters.ComboBoxPopupAnimationKey}}" Placement="Bottom">
                     <Themes:SystemDropShadowChrome x:Name="shadow" Color="Transparent" MaxHeight="{TemplateBinding MaxDropDownHeight}" MinWidth="{Binding ActualWidth, ElementName=templateRoot}">
                         <Border x:Name="dropDownBorder" BorderBrush="{DynamicResource {x:Static SystemColors.WindowFrameBrushKey}}" BorderThickness="0" Background="White" Opacity="0.5">
-                            <ScrollViewer x:Name="DropDownScrollViewer">
+                            <ScrollViewer x:Name="DropDownScrollViewer" Foreground="Black">
                                 <Grid x:Name="grid" RenderOptions.ClearTypeHint="Enabled">
                                     <Canvas x:Name="canvas" HorizontalAlignment="Left" Height="0" VerticalAlignment="Top" Width="0">
                                         <Rectangle x:Name="opaqueRect" Fill="{Binding Background, ElementName=dropDownBorder}" Height="{Binding ActualHeight, ElementName=dropDownBorder}" Width="{Binding ActualWidth, ElementName=dropDownBorder}"/>
@@ -292,6 +292,15 @@
 			FontFamily="Yu Gothic UI Light"  
 			Style="{StaticResource ResourceKey=MusicCollectionStyle}" 
 			ItemContainerStyle="{StaticResource ResourceKey=MusicItemStyle}" >
+            <i:Interaction.Triggers>
+                <i:EventTrigger EventName="MouseDoubleClick">
+                    <i:InvokeCommandAction 
+                                    Command="{Binding DataContext.SendSongEvent,
+                                                        RelativeSource={RelativeSource AncestorType={x:Type ListView}}}"
+                                    CommandParameter="{Binding ElementName=SongItems, 
+                                         Path=SelectedItem}"/>
+                </i:EventTrigger>
+            </i:Interaction.Triggers>
 
             <ListView.View>
                 <GridView>
@@ -345,13 +354,17 @@
                       Background="Transparent" 
                       HorizontalAlignment="Right" 
                       Width="81" 
+                      Opacity="0.5"
+                      Foreground="White"
                       Style="{DynamicResource ComboBoxStyle1}" 
                       SelectedIndex="0" 
                       FontFamily="Yu Gothic UI Light" />
             <ComboBox x:Name="filterBox" 
                       Margin="0,0,8,0"
                       HorizontalAlignment="Right"
-                      Width="80"
+                      Width="81"
+                      Opacity="0.5"
+                      Foreground="White"
                       Style="{DynamicResource ComboBoxStyle1}"
                       FontFamily="Yu Gothic UI Light"
                       ItemsSource="{Binding SongRankers}"
