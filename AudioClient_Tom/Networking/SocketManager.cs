@@ -61,7 +61,8 @@ namespace AudioClient_Tom.Networking
             //Create the Socket.
             mSocket = new Socket(AddressFamily.InterNetwork, 
                 SocketType.Stream, ProtocolType.Tcp);
-            OnConnect += (e, b) => { Thread.Sleep(1404040); };
+            // Instantiate the handlers. 
+            OnConnect += (e, b) => { };
             OnDisconnect += (e, b) => { };
             OnMessageIncoming += (e, b) => { };
             OnMessageOutgoing += (e, b) => { };
@@ -123,7 +124,6 @@ namespace AudioClient_Tom.Networking
                 state.workSocket = mSocket;
                 mSocket.BeginReceive(state.buffer, 0, StateObject.BufferSize, 0,
                     new AsyncCallback(ReceiveCallback), state);
-
             }
             catch (Exception e)
             {
@@ -144,7 +144,7 @@ namespace AudioClient_Tom.Networking
 
                 if (bytesRead > 0)
                 {
-                    Console.WriteLine(Encoding.ASCII.GetString(state.buffer, 0, bytesRead));
+                    OnMessageIncoming.Invoke(this, new MessageHandlerArgs());
                 }
 
                 Receive();
@@ -175,7 +175,11 @@ namespace AudioClient_Tom.Networking
             try
             {
                 int bytesSent = mSocket.EndSend(ar);
-                Console.WriteLine("Sent {0} bytes to server.", bytesSent);
+
+                if (bytesSent > 0)
+                {
+                    OnMessageOutgoing.Invoke(this, new MessageHandlerArgs());
+                }
             }
             catch (Exception e)
             {

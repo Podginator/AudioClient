@@ -1,4 +1,5 @@
 ﻿using AudioClient_Tom.Models;
+using AudioClient_Tom.PacketHandlers;
 using AudioClient_Tom.Utilities;
 using AudioClient_Tom.Views;
 using System;
@@ -35,8 +36,8 @@ namespace AudioClient_Tom.ViewModels
             mItems.Add(new MenuItemModel { Name = "Most Popular", Control = new Button() });
             swapViewModel(mItems[0]);
 
-            EventAggregator.EventAggregator.Instace.RegisterListener<SongViewModel>(e => {
-                CurrentlySelected = e.SongTitle;
+            EventAggregator.EventAggregator.Instace.RegisterListener<TestEvent>(e => {
+                CurrentlySelected = e.message;
             });
         }
 

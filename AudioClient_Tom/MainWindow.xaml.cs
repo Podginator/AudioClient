@@ -1,4 +1,5 @@
 ﻿using AudioClient_Tom.Networking;
+using AudioClient_Tom.PacketHandlers;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -26,6 +27,9 @@ namespace AudioClient_Tom
             InitializeComponent();
             IServer manager = new SocketManager();
             manager.Connect("localhost", 29054);
+            TestHandler handler = new TestHandler();
+
+            manager.OnMessageIncoming += handler.handleMessage;
         }
     }
 }

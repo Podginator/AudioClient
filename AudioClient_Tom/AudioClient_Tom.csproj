@@ -73,6 +73,7 @@
     <Compile Include="Networking\EventHandlers\IMessageReceiveHandler.cs" />
     <Compile Include="Networking\Handlers.cs" />
     <Compile Include="Networking\IServer.cs" />
+    <Compile Include="PacketHandlers\TestHandler.cs" />
     <Compile Include="RelayCommand.cs" />
     <Compile Include="Networking\SocketManager.cs" />
     <Compile Include="Utilities\AbstractObservable.cs" />
@@ -143,9 +144,7 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="PacketHandlers\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
