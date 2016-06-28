@@ -18,8 +18,10 @@ namespace AudioClient_Tom.ViewModels
         // The Control that we wish to swap out.
         private Control mControl;
 
+        // List of Menu Items
         private List<MenuItemModel> mItems;
 
+        // The currently selected model.
         private String mCurrentSelected;
 
         //Ctor:
@@ -34,7 +36,7 @@ namespace AudioClient_Tom.ViewModels
             swapViewModel(mItems[0]);
 
             EventAggregator.EventAggregator.Instace.RegisterListener<SongViewModel>(e => {
-                CurrentlySelected = e.ArtistName;
+                CurrentlySelected = e.SongTitle;
             });
         }
 

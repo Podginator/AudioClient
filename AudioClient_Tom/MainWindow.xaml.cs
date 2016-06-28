@@ -1,4 +1,5 @@
-﻿using System;
+﻿using AudioClient_Tom.Networking;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -23,6 +24,8 @@ namespace AudioClient_Tom
         public MainWindow()
         {
             InitializeComponent();
+            IServer manager = new SocketManager();
+            manager.Connect("localhost", 29054);
         }
     }
 }
