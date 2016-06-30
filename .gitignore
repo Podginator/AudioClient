@@ -13,3 +13,4 @@ AudioClient_Tom/obj/Debug/AudioClient_Tom.pdb
 *.exe
 AudioClient_Tom/bin/Debug/AudioClient_Tom.pdb
 *.cache
+*.suo

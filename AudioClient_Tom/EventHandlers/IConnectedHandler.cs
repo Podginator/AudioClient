@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace AudioClient_Tom.Networking.EventHandlers
+namespace AudioClient_Tom.EventHandlers
 {
     interface IConnectedHandler
     {

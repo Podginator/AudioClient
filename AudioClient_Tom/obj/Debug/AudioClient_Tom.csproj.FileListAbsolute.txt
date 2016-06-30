@@ -50,3 +50,5 @@ C:\Users\podgi\Documents\GitHub\AudioClient\AudioClient_Tom\obj\Debug\Views\Song
 C:\Users\podgi\Documents\GitHub\AudioClient\AudioClient_Tom\obj\Debug\AudioClient_Tom.g.resources
 C:\Users\podgi\Documents\GitHub\AudioClient\AudioClient_Tom\obj\Debug\AudioClient_Tom.Properties.Resources.resources
 C:\Users\podgi\Documents\GitHub\AudioClient\AudioClient_Tom\obj\Debug\AudioClient_Tom.csproj.GenerateResource.Cache
+C:\Users\podgi\Documents\GitHub\AudioClient\AudioClient_Tom\obj\Debug\Views\AudioControlView.g.cs
+C:\Users\podgi\Documents\GitHub\AudioClient\AudioClient_Tom\obj\Debug\Views\AudioControlView.baml

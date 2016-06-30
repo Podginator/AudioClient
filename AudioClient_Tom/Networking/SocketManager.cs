@@ -1,5 +1,4 @@
-﻿using AudioClient_Tom.Networking.EventHandlers;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
@@ -31,6 +30,9 @@ namespace AudioClient_Tom.Networking
     {
         // The Socket we're retrieving the incoming connections from.
         private Socket mSocket;
+
+        // Can continue listening.
+        private bool mCanRetrieve = false; 
 
         /// <summary>
         /// Connect Event
@@ -86,7 +88,7 @@ namespace AudioClient_Tom.Networking
 
                 // Begin Connecting to the Socket. 
                 mSocket.BeginConnect(remoteEP, new AsyncCallback(Connected),
-                    mSocket);
+                    remoteEP);
             }
             catch (Exception e)
             {
@@ -99,23 +101,50 @@ namespace AudioClient_Tom.Networking
         /// </summary>
         public void Disconnect()
         {
-            //not implemented yet.
+            StateObject state = new StateObject();
+            state.workSocket = mSocket;
+
+            mSocket.BeginDisconnect(false, Disconnected, state);
         }
 
         private void Connected(IAsyncResult ar)
         {
-            mSocket.EndConnect(ar);
-            ConnectedHandlerArgs connectedHandlerArgs = new ConnectedHandlerArgs();
-            connectedHandlerArgs.Connected = true;
+            try {
+                mSocket.EndConnect(ar);
+                ConnectedHandlerArgs connectedHandlerArgs = new ConnectedHandlerArgs();
+                connectedHandlerArgs.Connected = true;
 
-            OnConnect.Invoke(this, connectedHandlerArgs);
-        
-            //When we've connected it's time to start retrieving data.
-            Receive();
+                OnConnect.Invoke(this, connectedHandlerArgs);
+                mCanRetrieve = true;
+
+                //When we've connected it's time to start retrieving data.
+                Receive();
+            } catch (Exception e)
+            {
+                IPEndPoint remoteEP = (IPEndPoint)ar.AsyncState;
+                //Unable to connect, wait and try again. 
+                Thread.Sleep(1000);
+                Connect(remoteEP.Address.ToString(), remoteEP.Port);
+            }
         } 
 
+        /// <summary>
+        /// Disconnected handler.
+        /// </summary>
+        /// <param name="ar"></param>
+        private void Disconnected(IAsyncResult ar)
+        {
+            StateObject state = (StateObject) ar.AsyncState;
+            if (!state.workSocket.Connected)
+            {
+                mCanRetrieve = false; 
+            }
+        }
 
 
+        /// <summary>
+        /// Start receiving 
+        /// </summary>
         private void Receive()
         {
             try
@@ -147,7 +176,11 @@ namespace AudioClient_Tom.Networking
                     OnMessageIncoming.Invoke(this, new MessageHandlerArgs());
                 }
 
-                Receive();
+                // if we can still retrieve attempt to retrieve again. 
+                if (mCanRetrieve)
+                {
+                    Receive();
+                }
             }
             catch (Exception e)
             {

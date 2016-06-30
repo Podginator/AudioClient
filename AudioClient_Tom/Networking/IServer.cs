@@ -9,7 +9,7 @@ namespace AudioClient_Tom.Networking
     /// <summary>
     /// An interface reresenting a Server. 
     /// </summary>
-    interface IServer
+    public interface IServer
     {
 
         /// <summary>
