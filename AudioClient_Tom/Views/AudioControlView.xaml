@@ -7,20 +7,11 @@
              mc:Ignorable="d" 
              d:DesignHeight="50" d:DesignWidth="800">
     <Grid VerticalAlignment="Stretch" Height="50">
-        <Grid Width="266" Height="50">
-            <Ellipse Margin="116,8,114,0" Stroke="White" VerticalAlignment="Top" Height="32"/>
-            <Path Data="M123,105 L123,34.5 172.5,69.5 z" Margin="129.439,15.644,123.682,17.557" Stretch="Fill" Stroke="White" Fill="White" RenderTransformOrigin="0.5,0.5">
-                <Path.RenderTransform>
-                    <TransformGroup>
-                        <ScaleTransform ScaleY="-1"/>
-                        <SkewTransform/>
-                        <RotateTransform/>
-                        <TranslateTransform/>
-                    </TransformGroup>
-                </Path.RenderTransform>
-            </Path>
+        <Grid Width="266" Height="50" Margin="278,0,256,0">
+            <Ellipse Margin="118,12,119,12" Stroke="White"/>
+            <Path Data="M123,105 L123,34.5 172.5,69.5 z" Margin="128.355,17.758,127.142,18.543" Stretch="Fill" Stroke="White" Fill="White" RenderTransformOrigin="0.5,0.5"/>
 
-            <Path Data="M123,105 L123,34.5 172.5,69.5 z" Margin="92.47,11.577,0,12.425" Stretch="Fill" Stroke="White" Fill="White" HorizontalAlignment="Left" Width="11.228" RenderTransformOrigin="0.5,0.5">
+            <Path Data="M123,105 L123,34.5 172.5,69.5 z" Margin="102.506,17.66,0,18.639" Stretch="Fill" Stroke="White" Fill="White" HorizontalAlignment="Left" Width="8.989" RenderTransformOrigin="0.5,0.5">
                 <Path.RenderTransform>
                     <TransformGroup>
                         <ScaleTransform/>
@@ -30,25 +21,25 @@
                     </TransformGroup>
                 </Path.RenderTransform>
             </Path>
-            <Rectangle Fill="White" HorizontalAlignment="Left" Margin="92,8,0,12" Stroke="White" Width="2" RenderTransformOrigin="0.5,0.5" />
+            <Rectangle Fill="White" HorizontalAlignment="Left" Margin="102,18,0,20" Stroke="White" Width="1" RenderTransformOrigin="0.5,0.5" />
             <Rectangle Fill="White" HorizontalAlignment="Right" Margin="0,45,35.331,43" Stroke="White" Width="8"/>
-            <Path Data="M123,105 L123,34.5 172.5,69.5 z" Margin="164.224,12.078,0,11.925" Stretch="Fill" Stroke="White" Fill="White" HorizontalAlignment="Left" Width="11.228" RenderTransformOrigin="0.5,0.5">
+            <Path Data="M123,105 L123,34.5 172.5,69.5 z" Margin="153.84,17.756,0,18.543" Stretch="Fill" Stroke="White" Fill="White" HorizontalAlignment="Left" Width="8.99" RenderTransformOrigin="0.5,0.5">
                 <Path.RenderTransform>
                     <TransformGroup>
                         <ScaleTransform/>
                         <SkewTransform/>
-                        <RotateTransform/>
-                        <TranslateTransform Y="-2.5"/>
+                        <RotateTransform Angle="360"/>
+                        <TranslateTransform X="-0.51"/>
                     </TransformGroup>
                 </Path.RenderTransform>
             </Path>
-            <Rectangle Fill="White" HorizontalAlignment="Left" Margin="164,8,0,12" Stroke="White" Width="2" RenderTransformOrigin="0.5,0.5" >
+            <Rectangle Fill="White" HorizontalAlignment="Left" Margin="153,19,0,19" Stroke="White" Width="1" RenderTransformOrigin="0.5,0.5" >
                 <Rectangle.RenderTransform>
                     <TransformGroup>
                         <ScaleTransform/>
                         <SkewTransform/>
                         <RotateTransform Angle="180"/>
-                        <TranslateTransform X="10.964"/>
+                        <TranslateTransform X="8.5" Y="-0.5"/>
                     </TransformGroup>
                 </Rectangle.RenderTransform>
             </Rectangle>
