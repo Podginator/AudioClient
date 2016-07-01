@@ -8,6 +8,7 @@
              d:DesignHeight="50" d:DesignWidth="800">
     <Grid VerticalAlignment="Stretch" Height="50">
         <Grid Width="266" Height="50" Margin="278,0,256,0">
+
             <Ellipse Margin="118,12,119,12" Stroke="White"/>
             <Path Data="M123,105 L123,34.5 172.5,69.5 z" Margin="128.355,17.758,127.142,18.543" Stretch="Fill" Stroke="White" Fill="White" RenderTransformOrigin="0.5,0.5"/>
 

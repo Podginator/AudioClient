@@ -3,6 +3,7 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace AudioClient_Tom.EventAggregator
@@ -18,15 +19,6 @@ namespace AudioClient_Tom.EventAggregator
 
         // Dictionary of Class Extending Event
         private readonly ConcurrentDictionary<Type, List<object>> mTypeAction = new ConcurrentDictionary<Type, List<object>>();
-
-
-        /// <summary>
-        /// Private constructor, will use a singleton getInstance
-        /// </summary>
-        private EventAggregator()
-        {
-            //Setup
-        }
 
         /// <summary>
         /// Return the instance of this class
@@ -45,6 +37,7 @@ namespace AudioClient_Tom.EventAggregator
             }
         }
 
+
         /// <summary>
         /// Raise and distribute an event
         /// </summary>
@@ -52,16 +45,35 @@ namespace AudioClient_Tom.EventAggregator
         /// <param name="ev">The Event we wish to distribute </param>
         public void RaiseEvent<Event>(Event ev)
         {
-            foreach (object act in GetOrCreateListeners(typeof(Event)))
+            //Avoid operating on the UI thread and blocking on long things by placing onto a thread pool
+            List<object> actions = GetOrCreateListeners(typeof(Event));             
+            foreach (object act in actions)
             {
+                //Check whether this is an action.
                 if (act is Action<Event>)
                 {
                     Action<Event> action = (Action<Event>)act;
-                    action.Invoke(ev);
+                    Tuple<Action<Event>, Event> actionTup =
+                        new Tuple<Action<Event>, Event>(action, ev);
+                    ThreadPool.QueueUserWorkItem(InvokeActionCallback<Event>, actionTup);
                 }
             }
         }
 
+        /// <summary>
+        /// Callback method for the Threadpool
+        /// </summary>
+        /// <typeparam name="Event">The parameter Type for the action</typeparam>
+        /// <param name="ev">The Event paramter</param>
+        private void InvokeActionCallback<Event>(object ev)
+        {
+            //Cast the state object back down to an Action Tuple.
+            Tuple<Action<Event>, Event> actionTup = (Tuple<Action<Event>, Event>)ev;
+            //Then invoke the Action<Event> and the Event parameter on a seperate thread.
+            actionTup.Item1.Invoke(actionTup.Item2);
+
+
+        }
 
         /// <summary>
         /// Register a listener. 

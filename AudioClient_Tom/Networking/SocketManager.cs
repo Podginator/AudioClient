@@ -19,8 +19,6 @@ namespace AudioClient_Tom.Networking
         public const int BufferSize = 1024;
         // Receive buffer.
         public byte[] buffer = new byte[BufferSize];
-        // Received data string.
-        public StringBuilder sb = new StringBuilder();
     }
 
     /// <summary>
@@ -32,7 +30,10 @@ namespace AudioClient_Tom.Networking
         private Socket mSocket;
 
         // Can continue listening.
-        private bool mCanRetrieve = false; 
+        private bool mCanRetrieve = false;
+
+        // Flag to determine whether we're connected to the server. 
+        private bool mConnected = false; 
 
         /// <summary>
         /// Connect Event
@@ -80,7 +81,7 @@ namespace AudioClient_Tom.Networking
         {
             try {
                 // Retrieve the Host Information
-                IPHostEntry ipHostInfo = Dns.Resolve(address);
+                IPHostEntry ipHostInfo = Dns.GetHostEntry(address);
                 // The IP Address.
                 IPAddress ipAddress = ipHostInfo.AddressList[0];
                 // The End Point.
@@ -101,10 +102,13 @@ namespace AudioClient_Tom.Networking
         /// </summary>
         public void Disconnect()
         {
-            StateObject state = new StateObject();
-            state.workSocket = mSocket;
-
-            mSocket.BeginDisconnect(false, Disconnected, state);
+            //Attempt to disconnect from the Client. 
+            if (mConnected)
+            {
+                StateObject state = new StateObject();
+                state.workSocket = mSocket;
+                mSocket.BeginDisconnect(false, Disconnected, state);
+            }
         }
 
         private void Connected(IAsyncResult ar)
@@ -137,7 +141,8 @@ namespace AudioClient_Tom.Networking
             StateObject state = (StateObject) ar.AsyncState;
             if (!state.workSocket.Connected)
             {
-                mCanRetrieve = false; 
+                mCanRetrieve = false;
+                mConnected = false;
             }
         }
 
