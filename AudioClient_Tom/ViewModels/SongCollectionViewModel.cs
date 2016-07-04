@@ -1,4 +1,5 @@
-﻿using AudioClient_Tom.Utilities;
+﻿using AudioClient_Tom.EventAggregator.Event;
+using AudioClient_Tom.Utilities;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -182,7 +183,8 @@ namespace AudioClient_Tom.ViewModels
         // Swap out the View
         private void SendEvent(SongViewModel view)
         {
-            EventAggregator.EventAggregator.Instace.RaiseEvent<SongViewModel>(view);
+
+            EventAggregator.EventAggregator.Instace.RaiseEvent<SongChangeEvent>(new SongChangeEvent(view.Song));
         }
 
         // We can swap if our Menu Item Control is not nul.

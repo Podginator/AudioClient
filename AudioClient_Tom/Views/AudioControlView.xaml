@@ -3,16 +3,76 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:viewModels="clr-namespace:AudioClient_Tom.ViewModels"
              xmlns:local="clr-namespace:AudioClient_Tom.Views"
              mc:Ignorable="d" 
              d:DesignHeight="50" d:DesignWidth="800">
+    <UserControl.DataContext>
+        <viewModels:AudioControlViewModel/>
+    </UserControl.DataContext>
+
+    <UserControl.Resources>
+        <Style x:Key="btnCustom" TargetType="{x:Type ToggleButton}">
+            <Setter Property="Content">
+                <Setter.Value>
+                    <Grid>
+                        <Ellipse Stroke="White"/>
+                        <Path Data="M123,105 L123,34.5 172.5,69.5 z" Stretch="Fill" Stroke="White" Fill="White" RenderTransformOrigin="-2.954,0.158" Margin="8,5,5,5"/>
+                    </Grid>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <ControlTemplate x:Key="btnHighlight" TargetType="{x:Type ToggleButton}">
+            <Border x:Name="border" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Background="{TemplateBinding Background}" SnapsToDevicePixels="True">
+                <ContentPresenter x:Name="contentPresenter" ContentTemplate="{TemplateBinding ContentTemplate}" Content="{TemplateBinding Content}" ContentStringFormat="{TemplateBinding ContentStringFormat}" Focusable="False" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" Margin="{TemplateBinding Padding}" RecognizesAccessKey="True" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
+            </Border>
+            <ControlTemplate.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Content">
+                        <Setter.Value>
+                            <Grid>
+                                <Ellipse Stroke="White" Margin="-2.5,-2.5,-2.5,-2.5"/>
+                                <Path Data="M123,105 L123,34.5 172.5,69.5 z" Stretch="Fill" Stroke="White" Fill="White" RenderTransformOrigin="-2.954,0.158" Margin="6.5,2.5,2.5,2.5"/>
+                            </Grid>
+                        </Setter.Value>
+                    </Setter>
+                </Trigger>
+                <Trigger Property="ToggleButton.IsChecked" Value="True">
+                    <Setter Property="Content">
+                        <Setter.Value>
+                            <Grid>
+                                <Ellipse Stroke="White"/>
+                                <Rectangle HorizontalAlignment="Left"  RenderTransformOrigin="-2.954,0.158" Stretch="Fill"  Margin="9,5,0,5" Stroke="White" Width="2.25" Fill="White"/>
+                                <Rectangle HorizontalAlignment="Left"  RenderTransformOrigin="-2.954,0.158" Stretch="Fill"  Margin="14,5,0,5" Stroke="White" Width="2.25" Fill="White"/>
+                                <Path Data="M123,105 L123,34.5 172.5,69.5 z" Stretch="Fill" Stroke="Transparent" Fill="Transparent" RenderTransformOrigin="-2.954,0.158" Margin="6.5,2.5,2.5,2.5"/>
+                            </Grid>
+                        </Setter.Value>
+                    </Setter>
+                </Trigger>
+            </ControlTemplate.Triggers>
+        </ControlTemplate>
+
+        <ControlTemplate x:Key="emptyButton" TargetType="{x:Type Button}">
+            <Border x:Name="border" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Background="{TemplateBinding Background}" SnapsToDevicePixels="True">
+                <ContentPresenter x:Name="contentPresenter" ContentTemplate="{TemplateBinding ContentTemplate}" Content="{TemplateBinding Content}" ContentStringFormat="{TemplateBinding ContentStringFormat}" Focusable="False" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" Margin="{TemplateBinding Padding}" RecognizesAccessKey="True" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
+            </Border>
+        </ControlTemplate>
+
+
+
+    </UserControl.Resources>
+
     <Grid VerticalAlignment="Stretch" Height="50">
-        <Grid Width="266" Height="50" Margin="278,0,256,0">
-
-            <Ellipse Margin="118,12,119,12" Stroke="White"/>
-            <Path Data="M123,105 L123,34.5 172.5,69.5 z" Margin="128.355,17.758,127.142,18.543" Stretch="Fill" Stroke="White" Fill="White" RenderTransformOrigin="0.5,0.5"/>
-
-            <Path Data="M123,105 L123,34.5 172.5,69.5 z" Margin="102.506,17.66,0,18.639" Stretch="Fill" Stroke="White" Fill="White" HorizontalAlignment="Left" Width="8.989" RenderTransformOrigin="0.5,0.5">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="50"/>
+            <ColumnDefinition />
+            <ColumnDefinition Width="200"/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+        <Grid Height="50" Grid.Column="2">
+            <ToggleButton Style="{StaticResource btnCustom}" Background="{x:Null}" BorderBrush="{x:Null}" Foreground="{x:Null}" Margin="85.5,11,85.5,11" Template="{DynamicResource btnHighlight}" />
+            <Path Data="M123,105 L123,34.5 172.5,69.5 z" Margin="70.506,17.66,0,18.639" Stretch="Fill" Stroke="White" Fill="White" HorizontalAlignment="Left" Width="8.989" RenderTransformOrigin="0.5,0.5">
                 <Path.RenderTransform>
                     <TransformGroup>
                         <ScaleTransform/>
@@ -22,9 +82,9 @@
                     </TransformGroup>
                 </Path.RenderTransform>
             </Path>
-            <Rectangle Fill="White" HorizontalAlignment="Left" Margin="102,18,0,20" Stroke="White" Width="1" RenderTransformOrigin="0.5,0.5" />
+            <Rectangle Fill="White" HorizontalAlignment="Left" Margin="70,18,0,20" Stroke="White" Width="1" RenderTransformOrigin="0.5,0.5" />
             <Rectangle Fill="White" HorizontalAlignment="Right" Margin="0,45,35.331,43" Stroke="White" Width="8"/>
-            <Path Data="M123,105 L123,34.5 172.5,69.5 z" Margin="153.84,17.756,0,18.543" Stretch="Fill" Stroke="White" Fill="White" HorizontalAlignment="Left" Width="8.99" RenderTransformOrigin="0.5,0.5">
+            <Path Data="M123,105 L123,34.5 172.5,69.5 z" Margin="120.84,17.756,0,18.543" Stretch="Fill" Stroke="White" Fill="White" HorizontalAlignment="Left" Width="8.99" RenderTransformOrigin="0.5,0.5">
                 <Path.RenderTransform>
                     <TransformGroup>
                         <ScaleTransform/>
@@ -34,7 +94,7 @@
                     </TransformGroup>
                 </Path.RenderTransform>
             </Path>
-            <Rectangle Fill="White" HorizontalAlignment="Left" Margin="153,19,0,19" Stroke="White" Width="1" RenderTransformOrigin="0.5,0.5" >
+            <Rectangle Fill="White" HorizontalAlignment="Left" Margin="121,19,0,19" Stroke="White" Width="1" RenderTransformOrigin="0.5,0.5" >
                 <Rectangle.RenderTransform>
                     <TransformGroup>
                         <ScaleTransform/>
@@ -44,9 +104,17 @@
                     </TransformGroup>
                 </Rectangle.RenderTransform>
             </Rectangle>
+            <Button x:Name="back" Content=""  HorizontalAlignment="Left" Margin="67.5,16.506,0,16.25" Width="15.125" RenderTransformOrigin="0.567,0.5" Background="Transparent" BorderBrush="Transparent" Template="{StaticResource emptyButton}" >
+            </Button>
+            <Button x:Name="forward" Content="" Style="{x:Null}" HorizontalAlignment="Right" Margin="0,16.506,67.67,16.25" Width="15.125" RenderTransformOrigin="0.567,0.5"  Background="Transparent" BorderBrush="Transparent"  Template="{StaticResource emptyButton}">
+            </Button>
 
 
 
         </Grid>
+        <Slider x:Name="slider" Margin="55,10,21,16" Grid.Column="3"/>
+        <Image x:Name="image" Grid.Column="0" HorizontalAlignment="Left" Height="50" VerticalAlignment="Top" Width="50" OpacityMask="White"/>
+        <TextBlock x:Name="SongTitleBlock" Text="{Binding SongTitle}" HorizontalAlignment="Left" Height="24" Margin="9,6,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="214" Foreground="Silver" FontFamily="Yu Gothic UI Light" FontWeight="Bold" FontSize="16" Grid.Column="1"/>
+        <TextBlock x:Name="AuthorBlock" Text="{Binding ArtistName}" HorizontalAlignment="Left" Height="17" Margin="9,25,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="214" Foreground="Silver" FontFamily="Yu Gothic UI Light" Grid.Column="1"/>
     </Grid>
 </UserControl>

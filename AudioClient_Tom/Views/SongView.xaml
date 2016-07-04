@@ -274,7 +274,6 @@
         </Style>
     </UserControl.Resources>
 
-
     <UserControl.DataContext>
         <viewModels:SongCollectionViewModel/>
     </UserControl.DataContext>
