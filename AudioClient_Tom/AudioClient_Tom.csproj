@@ -69,6 +69,7 @@
     <Compile Include="EventAggregator\EventAggregator.cs" />
     <Compile Include="EventAggregator\Event\FriendUpdateEvent.cs" />
     <Compile Include="EventAggregator\Event\SongChangeEvent.cs" />
+    <Compile Include="EventAggregator\Event\SongRequestEvent.cs" />
     <Compile Include="Models\MenuItemModel.cs" />
     <Compile Include="Models\Songs.cs" />
     <Compile Include="Models\User.cs" />

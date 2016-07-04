@@ -50,5 +50,29 @@ namespace AudioClient_Tom.ViewModels
         {
             get; set;
         }
+
+        // Swap out the View
+        private void RequestEvent(SongRequestEvent.REQUEST_TYPE type)
+        {
+
+            EventAggregator.EventAggregator.Instace.RaiseEvent<SongRequestEvent>(new SongRequestEvent(type));
+        }
+
+        // We can swap if our Menu Item Control is not nul.
+        private Boolean canSwap(SongRequestEvent.REQUEST_TYPE typee)
+        {
+            return true;
+        }
+
+        // the Command to use to swap out a view model.
+        public ICommand RequestSendCommand
+        {
+            get
+            {
+                return new RelayCommand<SongRequestEvent.REQUEST_TYPE>(RequestEvent, canSwap);
+            }
+        }
+
+
     }
 }

@@ -3,7 +3,9 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
              xmlns:viewModels="clr-namespace:AudioClient_Tom.ViewModels"
+             xmlns:eventArgs="clr-namespace:AudioClient_Tom.EventAggregator.Event"
              xmlns:local="clr-namespace:AudioClient_Tom.Views"
              mc:Ignorable="d" 
              d:DesignHeight="50" d:DesignWidth="800">
@@ -105,8 +107,22 @@
                 </Rectangle.RenderTransform>
             </Rectangle>
             <Button x:Name="back" Content=""  HorizontalAlignment="Left" Margin="67.5,16.506,0,16.25" Width="15.125" RenderTransformOrigin="0.567,0.5" Background="Transparent" BorderBrush="Transparent" Template="{StaticResource emptyButton}" >
+                <i:Interaction.Triggers>
+                    <i:EventTrigger EventName="Click">
+                        <i:InvokeCommandAction 
+                                    Command="{Binding RequestSendCommand}"
+                                    CommandParameter="{x:Static eventArgs:SongRequestEvent+REQUEST_TYPE.Previous}"/>
+                    </i:EventTrigger>
+                </i:Interaction.Triggers>
             </Button>
             <Button x:Name="forward" Content="" Style="{x:Null}" HorizontalAlignment="Right" Margin="0,16.506,67.67,16.25" Width="15.125" RenderTransformOrigin="0.567,0.5"  Background="Transparent" BorderBrush="Transparent"  Template="{StaticResource emptyButton}">
+                <i:Interaction.Triggers>
+                    <i:EventTrigger EventName="Click">
+                        <i:InvokeCommandAction 
+                                    Command="{Binding RequestSendCommand}"
+                                    CommandParameter="{x:Static eventArgs:SongRequestEvent+REQUEST_TYPE.Next}"/>
+                    </i:EventTrigger>
+                </i:Interaction.Triggers>
             </Button>
 
 

@@ -1,4 +1,5 @@
 ﻿using AudioClient_Tom.EventAggregator.Event;
+using AudioClient_Tom.Models;
 using AudioClient_Tom.Utilities;
 using System;
 using System.Collections.Generic;
@@ -34,6 +35,9 @@ namespace AudioClient_Tom.ViewModels
         // The Current Filter Organiser 
         private IFilterOrganiser<string, string> mFilter;
 
+        // current index
+        private int index; 
+
 
         /// <summary>
         /// Tempory CTOR. Creates a lot of songs. 
@@ -57,6 +61,24 @@ namespace AudioClient_Tom.ViewModels
 
             CurrentFilter = mFilters["Exact Match"];
             ConverterKey = "Song Title";
+            index = -1;
+
+            EventAggregator.EventAggregator.Instace.RegisterListener<SongRequestEvent>((songEvt) =>
+            {
+                if (songEvt.Type == SongRequestEvent.REQUEST_TYPE.Next)
+                {
+                    index++;
+                }
+                else if (songEvt.Type == SongRequestEvent.REQUEST_TYPE.Previous)
+                {
+                    index--;
+                }
+                
+                if (index > -1) {
+                    SongViewModel model = mSongs[index];
+                    SendEvent(model);
+                }
+            });
         }
 
         /// <summary>
