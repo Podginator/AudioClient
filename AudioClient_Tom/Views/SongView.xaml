@@ -290,7 +290,7 @@
 			Foreground="White" 
 			FontFamily="Yu Gothic UI Light"  
 			Style="{StaticResource ResourceKey=MusicCollectionStyle}" 
-			ItemContainerStyle="{StaticResource ResourceKey=MusicItemStyle}" >
+			ItemContainerStyle="{StaticResource ResourceKey=MusicItemStyle}" SelectedIndex="{Binding SelectedIndex}" >
             <i:Interaction.Triggers>
                 <i:EventTrigger EventName="MouseDoubleClick">
                     <i:InvokeCommandAction 

@@ -20,6 +20,9 @@ namespace AudioClient_Tom.ViewModels
         // A collection of songs. 
         private ObservableCollection<SongViewModel> mSongs;
 
+        // The currently selected song.
+        private SongViewModel mSelectedSong; 
+
         // Converters.
         private IDictionary<String, SongConvert> mConverters;
 
@@ -36,7 +39,7 @@ namespace AudioClient_Tom.ViewModels
         private IFilterOrganiser<string, string> mFilter;
 
         // current index
-        private int index; 
+        private int mCurrentIndex; 
 
 
         /// <summary>
@@ -61,23 +64,37 @@ namespace AudioClient_Tom.ViewModels
 
             CurrentFilter = mFilters["Exact Match"];
             ConverterKey = "Song Title";
-            index = -1;
+            SelectedIndex = -1;
 
             EventAggregator.EventAggregator.Instace.RegisterListener<SongRequestEvent>((songEvt) =>
             {
                 if (songEvt.Type == SongRequestEvent.REQUEST_TYPE.Next)
                 {
-                    index++;
+                    SelectedIndex++;
                 }
                 else if (songEvt.Type == SongRequestEvent.REQUEST_TYPE.Previous)
                 {
-                    index--;
+                    SelectedIndex--;
                 }
                 
-                if (index > -1) {
-                    SongViewModel model = mSongs[index];
+                if (mCurrentIndex < 0)
+                {
+                    SelectedIndex = FilteredCollection.Count - 1;
+                }
+                else if (mCurrentIndex >= FilteredCollection.Count)
+                {
+                    SelectedIndex = 0;
+                }
+
+                //Get the Current Model.
+                SongViewModel model = mSongs[SelectedIndex];
+                
+                //Then fire an event to the listeners to indicate that the Currently selected song has changed.
+                if (model != null)
+                {
                     SendEvent(model);
                 }
+
             });
         }
 
@@ -162,6 +179,19 @@ namespace AudioClient_Tom.ViewModels
             }
         }
 
+        public int SelectedIndex
+        {
+            get
+            {
+                return mCurrentIndex;
+            } 
+            set
+            {
+                mCurrentIndex = value;
+                FirePropertyChanged("SelectedIndex");
+            }
+        }
+
         /// <summary>
         /// The Filtered Collection based on the Filtered String and Organisers etc.
         /// </summary>
@@ -197,6 +227,10 @@ namespace AudioClient_Tom.ViewModels
                     };
 
                     retVal.Sort(comp);
+
+                    //Then set the adjusted index.
+                    SelectedIndex = retVal.IndexOf(mSelectedSong);
+
                     return retVal;
                 }
             }
@@ -205,6 +239,9 @@ namespace AudioClient_Tom.ViewModels
         // Swap out the View
         private void SendEvent(SongViewModel view)
         {
+            //First get where this lies in our filtered collection. 
+            mSelectedSong = view;
+            SelectedIndex = mSongs.IndexOf(view);
 
             EventAggregator.EventAggregator.Instace.RaiseEvent<SongChangeEvent>(new SongChangeEvent(view.Song));
         }
