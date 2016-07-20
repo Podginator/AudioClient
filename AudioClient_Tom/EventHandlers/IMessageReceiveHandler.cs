@@ -9,6 +9,6 @@ namespace AudioClient_Tom.EventHandlers
 {
     public interface IMessageReceiveHandler
     {
-        void HandleMessageReceived(byte[] message, IServer socket); 
+        void HandleMessageReceived(MessageHandlerArgs args); 
     }
 }

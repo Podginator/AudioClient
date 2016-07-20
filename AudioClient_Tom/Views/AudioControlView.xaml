@@ -405,9 +405,6 @@
                     </i:EventTrigger>
                 </i:Interaction.Triggers>
             </Button>
-
-
-
         </Grid>
         <Slider x:Name="slider" Margin="50.998,21.832,25.002,18.835" Grid.Column="3" Style="{DynamicResource AudioSlider}" Foreground="White"/>
         <Image x:Name="image" Grid.Column="0" HorizontalAlignment="Left" Height="50" VerticalAlignment="Top" Width="50" OpacityMask="White"/>

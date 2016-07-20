@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace AudioClient_Tom.EventHandlers
 {
-    interface IConnectedHandler
+    public interface IConnectedHandler
     {
         /// <summary>
         /// Handle a server connecting.

@@ -25,7 +25,7 @@ namespace AudioClient_Tom.ViewModels
             SongTitle = "";
             ArtistName = "";
 
-            EventAggregator.EventAggregator.Instace.RegisterListener<SongChangeEvent>((songEvt) =>
+            EventAggregator.EventAggregator.Instance.RegisterListener<SongChangeEvent>((songEvt) =>
             {
                 SongTitle = songEvt.Song.SongTitle;
                 ArtistName = songEvt.Song.ArtistName;
@@ -55,7 +55,7 @@ namespace AudioClient_Tom.ViewModels
         private void RequestEvent(SongRequestEvent.REQUEST_TYPE type)
         {
 
-            EventAggregator.EventAggregator.Instace.RaiseEvent<SongRequestEvent>(new SongRequestEvent(type));
+            EventAggregator.EventAggregator.Instance.RaiseEvent<SongRequestEvent>(new SongRequestEvent(type));
         }
 
         // We can swap if our Menu Item Control is not nul.

@@ -67,6 +67,7 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="EventAggregator\EventAggregator.cs" />
+    <Compile Include="EventAggregator\Event\FileListRetrievedEvent.cs" />
     <Compile Include="EventAggregator\Event\FriendUpdateEvent.cs" />
     <Compile Include="EventAggregator\Event\SongChangeEvent.cs" />
     <Compile Include="EventAggregator\Event\SongRequestEvent.cs" />
@@ -75,7 +76,9 @@
     <Compile Include="Models\User.cs" />
     <Compile Include="EventHandlers\IConnectedHandler.cs" />
     <Compile Include="EventHandlers\IMessageReceiveHandler.cs" />
+    <Compile Include="Networking\FileListHandler.cs" />
     <Compile Include="Networking\Handlers.cs" />
+    <Compile Include="Networking\IMessageReceiveHandlers.cs" />
     <Compile Include="Networking\IServer.cs" />
     <Compile Include="RelayCommand.cs" />
     <Compile Include="Networking\SocketManager.cs" />

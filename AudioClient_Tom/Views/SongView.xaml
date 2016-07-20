@@ -313,7 +313,7 @@
 
         <Grid Height="22" Margin="20,32,20,0" VerticalAlignment="Top"  >
             <!-- overlay with hint text -->
-            <TextBlock Margin="0, 0, 180, 0" MinWidth="50" Text="  Filter..." 
+            <TextBlock Margin="0, 3, 180, 0" MinWidth="50" Text="  Filter..." 
 				Foreground="White" FontFamily="Yu Gothic UI Light" Visibility="{Binding Text.IsEmpty, Converter={StaticResource MyBoolToVisibilityConverter}, ElementName=textBox}" Opacity="0.5" />
             <TextBox Margin="0,0,192,0"
                      x:Name="textBox"

@@ -26,6 +26,8 @@ namespace AudioClient_Tom
             InitializeComponent();
             IServer manager = new SocketManager();
             manager.Connect("localhost", 29054);
+            FileListHandler listHander = new FileListHandler();
+            manager.OnMessageIncoming += listHander.HandleMessageReceived;
         }
     }
 }

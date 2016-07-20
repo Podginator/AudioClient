@@ -1,16 +1,25 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace AudioClient_Tom.Models
 {
+
+    [StructLayout(LayoutKind.Sequential)]
     public class Song
     {
-        string mArtistName;
+
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 128)]
         string mSongTitle;
-        int mSongLength;
+
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 128)]
+        string mArtistName;
+
+        Int32 mSongLength;
+
 
         /// <summary>
         /// The artist name.

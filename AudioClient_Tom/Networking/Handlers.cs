@@ -18,6 +18,7 @@ namespace AudioClient_Tom.Networking
     {
         public byte[] Message { get; set; }
 
+        public int Size { get; set; }
 
         public IServer Sender { get; set; }
 

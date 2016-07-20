@@ -14,6 +14,11 @@ namespace AudioClient_Tom.ViewModels
         //The song object this model represents.
         Song mSong;
 
+        public SongViewModel(Song song)
+        {
+            Song = song;
+        }
+
         /// <summary>
         /// Returns the string object
         /// </summary>

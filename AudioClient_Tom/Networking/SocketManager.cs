@@ -81,8 +81,8 @@ namespace AudioClient_Tom.Networking
         {
             try {
                 // Retrieve the Host Information
-                IPHostEntry ipHostInfo = Dns.GetHostEntry(address);
-                // The IP Address.
+                IPHostEntry ipHostInfo = Dns.Resolve(address);
+               // The IP Address.
                 IPAddress ipAddress = ipHostInfo.AddressList[0];
                 // The End Point.
                 IPEndPoint remoteEP = new IPEndPoint(ipAddress, port);
@@ -120,6 +120,12 @@ namespace AudioClient_Tom.Networking
 
                 OnConnect.Invoke(this, connectedHandlerArgs);
                 mCanRetrieve = true;
+
+                StringBuilder builder = new StringBuilder();
+                builder.Append(4);
+                builder.Append("charcharchar");
+                Send(builder.ToString());
+                builder.Clear();
 
                 //When we've connected it's time to start retrieving data.
                 Receive();
@@ -171,6 +177,9 @@ namespace AudioClient_Tom.Networking
         /// <param name="res"> The Async Result </param>
         private void ReceiveCallback(IAsyncResult res)
         {
+
+            Console.WriteLine("MSG RECEIVED");
+
             try
             {
                 StateObject state = (StateObject)res.AsyncState;
@@ -178,7 +187,12 @@ namespace AudioClient_Tom.Networking
 
                 if (bytesRead > 0)
                 {
-                    OnMessageIncoming.Invoke(this, new MessageHandlerArgs());
+                    MessageHandlerArgs args = new MessageHandlerArgs();
+                    args.Message = state.buffer;
+                    args.Size = bytesRead;
+                    args.Sender = this;
+
+                    OnMessageIncoming.Invoke(this, args);
                 }
 
                 // if we can still retrieve attempt to retrieve again. 
@@ -199,7 +213,7 @@ namespace AudioClient_Tom.Networking
         /// <param name="sendedString"> Send to the Server</param>
         public void Send(String sendData)
         {
-            byte[] data = Encoding.ASCII.GetBytes(sendData);
+            byte[] data = Encoding.UTF8.GetBytes(sendData);
 
             mSocket.BeginSend(data, 0, data.Length, 0, new AsyncCallback(SendCallback), mSocket);
         }

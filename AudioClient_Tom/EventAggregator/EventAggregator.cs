@@ -24,7 +24,7 @@ namespace AudioClient_Tom.EventAggregator
         /// Return the instance of this class
         /// </summary>
         /// <returns> The singleton instance of this class </returns>
-        public static EventAggregator Instace
+        public static EventAggregator Instance
         {
             get
             {

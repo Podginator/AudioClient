@@ -7,7 +7,9 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Input;
+using System.Windows.Threading;
 
 namespace AudioClient_Tom.ViewModels
 {
@@ -48,12 +50,6 @@ namespace AudioClient_Tom.ViewModels
         public SongCollectionViewModel()
         {
             mSongs = new ObservableCollection<SongViewModel>();
-            mSongs.Add(new SongViewModel { Song = new Models.Song(), SongTitle = "ABC_Song", ArtistName = "Shaft", LengthSeconds = 150 });
-            mSongs.Add(new SongViewModel { Song = new Models.Song(), SongTitle = "CDE_Song", ArtistName = "Shaft", LengthSeconds = 150 });
-            mSongs.Add(new SongViewModel { Song = new Models.Song(), SongTitle = "FGH_Song", ArtistName = "Shaft", LengthSeconds = 150 });
-            mSongs.Add(new SongViewModel { Song = new Models.Song(), SongTitle = "IJK_SONG", ArtistName = "Shaft", LengthSeconds = 150 });
-            mSongs.Add(new SongViewModel { Song = new Models.Song(), SongTitle = "LMN_Song", ArtistName = "Shaft", LengthSeconds = 150 });
-            mSongs.Add(new SongViewModel { Song = new Models.Song(), SongTitle = "SpaceJam", ArtistName = "Shaft", LengthSeconds = 150 });
 
             mConverters = new Dictionary<String, SongConvert>();
             mConverters.Add("Song Title", e => e.SongTitle);
@@ -66,7 +62,7 @@ namespace AudioClient_Tom.ViewModels
             ConverterKey = "Song Title";
             SelectedIndex = -1;
 
-            EventAggregator.EventAggregator.Instace.RegisterListener<SongRequestEvent>((songEvt) =>
+            EventAggregator.EventAggregator.Instance.RegisterListener<SongRequestEvent>((songEvt) =>
             {
                 if (songEvt.Type == SongRequestEvent.REQUEST_TYPE.Next)
                 {
@@ -95,6 +91,22 @@ namespace AudioClient_Tom.ViewModels
                     SendEvent(model);
                 }
 
+            });
+
+
+            EventAggregator.EventAggregator.Instance.RegisterListener<FileListRetrievedEvent>((fileEvt) =>
+            {
+                Application.Current.Dispatcher.Invoke((Action)(() =>
+                {
+                    foreach (Song song in fileEvt.SongCollection)
+                    {
+                        SongCollection.Add(new SongViewModel(song));
+                    }
+                    FirePropertyChanged("FilteredCollection");
+                }));
+
+                
+                
             });
         }
 
@@ -243,7 +255,7 @@ namespace AudioClient_Tom.ViewModels
             mSelectedSong = view;
             SelectedIndex = mSongs.IndexOf(view);
 
-            EventAggregator.EventAggregator.Instace.RaiseEvent<SongChangeEvent>(new SongChangeEvent(view.Song));
+            EventAggregator.EventAggregator.Instance.RaiseEvent<SongChangeEvent>(new SongChangeEvent(view.Song));
         }
 
         // We can swap if our Menu Item Control is not nul.
