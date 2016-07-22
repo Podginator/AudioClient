@@ -1,11 +1,13 @@
 ﻿using AudioClient_Tom.EventAggregator.Event;
 using AudioClient_Tom.Models;
+using AudioClient_Tom.Networking;
 using AudioClient_Tom.Utilities;
 using AudioClient_Tom.Views;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Controls;
@@ -31,6 +33,10 @@ namespace AudioClient_Tom.ViewModels
 
                 this.FirePropertyChanged("SongTitle");
                 this.FirePropertyChanged("ArtistName");
+
+                //Request a packet with this song. 
+                EventAggregator.EventAggregator.Instance.RaiseEvent<Packet>(new Packet(PacketType.TRACK, 260, Song.Serialize(songEvt.Song)));
+
             });
         }
 
