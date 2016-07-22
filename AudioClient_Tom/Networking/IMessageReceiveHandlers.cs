@@ -1,6 +1,7 @@
 ﻿namespace AudioClient_Tom.Networking
 {
-    internal interface IMessageReceiveHandlers
+    public interface IMessageReceiveHandlers
     {
+        void HandleMessageReceived(object sender, MessageHandlerArgs args);
     }
 }

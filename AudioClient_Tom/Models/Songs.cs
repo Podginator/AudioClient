@@ -12,10 +12,10 @@ namespace AudioClient_Tom.Models
     public class Song
     {
 
-        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 128)]
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 64)]
         string mSongTitle;
 
-        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 128)]
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 64)]
         string mArtistName;
 
         Int32 mSongLength;
@@ -47,5 +47,20 @@ namespace AudioClient_Tom.Models
             get { return mSongLength; }
             set { mSongLength = value; }
         }
+
+
+        public static Song Deserialize(byte[] songArray)
+        {
+            Song res = null;
+            var handle = GCHandle.Alloc(songArray, GCHandleType.Pinned);
+            var structure = Marshal.PtrToStructure(handle.AddrOfPinnedObject(), typeof(Song));
+            if (structure is Song)
+            {
+                res = (Song)structure;
+            }
+            handle.Free();
+
+            return res;
+        }  
     }
 }

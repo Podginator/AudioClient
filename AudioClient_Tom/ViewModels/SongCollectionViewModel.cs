@@ -1,5 +1,6 @@
 ﻿using AudioClient_Tom.EventAggregator.Event;
 using AudioClient_Tom.Models;
+using AudioClient_Tom.Networking;
 using AudioClient_Tom.Utilities;
 using System;
 using System.Collections.Generic;
@@ -62,52 +63,13 @@ namespace AudioClient_Tom.ViewModels
             ConverterKey = "Song Title";
             SelectedIndex = -1;
 
-            EventAggregator.EventAggregator.Instance.RegisterListener<SongRequestEvent>((songEvt) =>
-            {
-                if (songEvt.Type == SongRequestEvent.REQUEST_TYPE.Next)
-                {
-                    SelectedIndex++;
-                }
-                else if (songEvt.Type == SongRequestEvent.REQUEST_TYPE.Previous)
-                {
-                    SelectedIndex--;
-                }
-                
-                if (mCurrentIndex < 0)
-                {
-                    SelectedIndex = FilteredCollection.Count - 1;
-                }
-                else if (mCurrentIndex >= FilteredCollection.Count)
-                {
-                    SelectedIndex = 0;
-                }
 
-                //Get the Current Model.
-                SongViewModel model = mSongs[SelectedIndex];
-                
-                //Then fire an event to the listeners to indicate that the Currently selected song has changed.
-                if (model != null)
-                {
-                    SendEvent(model);
-                }
+            EventAggregator.EventAggregator.Instance.RaiseEvent<Packet>(new Packet(PacketType.FILELIST, 0, ""));
+            //Listen for Song Request Events.
+            EventAggregator.EventAggregator.Instance.RegisterListener<SongRequestEvent>(SongRequeustListener);
 
-            });
-
-
-            EventAggregator.EventAggregator.Instance.RegisterListener<FileListRetrievedEvent>((fileEvt) =>
-            {
-                Application.Current.Dispatcher.Invoke((Action)(() =>
-                {
-                    foreach (Song song in fileEvt.SongCollection)
-                    {
-                        SongCollection.Add(new SongViewModel(song));
-                    }
-                    FirePropertyChanged("FilteredCollection");
-                }));
-
-                
-                
-            });
+            //Also register for File List Retrieved Events to update the view. 
+            EventAggregator.EventAggregator.Instance.RegisterListener<FileListRetrievedEvent>(FileListRetrievedListener);
         }
 
         /// <summary>
@@ -191,6 +153,9 @@ namespace AudioClient_Tom.ViewModels
             }
         }
 
+        /// <summary>
+        /// The Currently Selected index. 
+        /// </summary>
         public int SelectedIndex
         {
             get
@@ -248,8 +213,64 @@ namespace AudioClient_Tom.ViewModels
             }
         }
 
-        // Swap out the View
-        private void SendEvent(SongViewModel view)
+
+
+        /// <summary>
+        /// Handle an Incoming Song Request Event
+        /// </summary>
+        /// <param name="songEvt">The event</param>
+        private void SongRequeustListener(SongRequestEvent songEvt)
+        {
+            if (songEvt.Type == SongRequestEvent.REQUEST_TYPE.Next)
+            {
+                SelectedIndex++;
+            }
+            else if (songEvt.Type == SongRequestEvent.REQUEST_TYPE.Previous)
+            {
+                SelectedIndex--;
+            }
+
+            if (mCurrentIndex < 0)
+            {
+                SelectedIndex = FilteredCollection.Count - 1;
+            }
+            else if (mCurrentIndex >= FilteredCollection.Count)
+            {
+                SelectedIndex = 0;
+            }
+
+            //Get the Current Model.
+            SongViewModel model = mSongs[SelectedIndex];
+
+            //Then fire an event to the listeners to indicate that the Currently selected song has changed.
+            if (model != null)
+            {
+                SendSongChangeEvent(model);
+            }
+
+        }
+
+
+        private void FileListRetrievedListener(FileListRetrievedEvent fileEvt)
+        {
+            // Use this to then update the Song Collection, and alter the Filtered 
+            // Collection.
+            Application.Current.Dispatcher.Invoke((Action)(() =>
+            {
+                //Add each song in the Song Collection.
+                foreach (Song song in fileEvt.SongCollection)
+                {
+                    SongCollection.Add(new SongViewModel(song));
+                }
+                FirePropertyChanged("FilteredCollection");
+            }));
+        } 
+
+        /// <summary>
+        /// Push A Song Changed event onto the Event Aggregator. 
+        /// </summary>
+        /// <param name="view">The View model containing the song we want to listetn to.</param>
+        private void SendSongChangeEvent(SongViewModel view)
         {
             //First get where this lies in our filtered collection. 
             mSelectedSong = view;
@@ -258,18 +279,14 @@ namespace AudioClient_Tom.ViewModels
             EventAggregator.EventAggregator.Instance.RaiseEvent<SongChangeEvent>(new SongChangeEvent(view.Song));
         }
 
-        // We can swap if our Menu Item Control is not nul.
-        private Boolean canSwap(SongViewModel swappable)
-        {
-            return true;
-        }
-
-        // the Command to use to swap out a view model.
+        /// <summary>
+        /// The event to send the song. Calls to the Event Aggregator.
+        /// </summary>
         public ICommand SendSongEvent
         {
             get
             {
-                return new RelayCommand<SongViewModel>(SendEvent, canSwap);
+                return new RelayCommand<SongViewModel>(SendSongChangeEvent, (evt) => { return true; });
             }
         }
 

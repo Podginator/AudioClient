@@ -23,11 +23,7 @@ namespace AudioClient_Tom
     {
         public MainWindow()
         {
-            InitializeComponent();
-            IServer manager = new SocketManager();
-            manager.Connect("localhost", 29054);
-            FileListHandler listHander = new FileListHandler();
-            manager.OnMessageIncoming += listHander.HandleMessageReceived;
+            InitializeComponent();   
         }
     }
 }

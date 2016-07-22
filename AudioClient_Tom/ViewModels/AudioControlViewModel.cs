@@ -16,7 +16,6 @@ namespace AudioClient_Tom.ViewModels
     class AudioControlViewModel : AbstractObservable
     {
 
-
         /// <summary>
         /// Default the Songs as Nill;
         /// </summary>
@@ -51,25 +50,23 @@ namespace AudioClient_Tom.ViewModels
             get; set;
         }
 
-        // Swap out the View
+        /// <summary>
+        /// Send a Song Request change event
+        /// </summary>
+        /// <param name="type">The Request type we are sending</param>
         private void RequestEvent(SongRequestEvent.REQUEST_TYPE type)
         {
-
             EventAggregator.EventAggregator.Instance.RaiseEvent<SongRequestEvent>(new SongRequestEvent(type));
         }
 
-        // We can swap if our Menu Item Control is not nul.
-        private Boolean canSwap(SongRequestEvent.REQUEST_TYPE typee)
-        {
-            return true;
-        }
-
-        // the Command to use to swap out a view model.
+        /// <summary>
+        /// The command to swap songs. 
+        /// </summary>
         public ICommand RequestSendCommand
         {
             get
             {
-                return new RelayCommand<SongRequestEvent.REQUEST_TYPE>(RequestEvent, canSwap);
+                return new RelayCommand<SongRequestEvent.REQUEST_TYPE>(RequestEvent, (type) => { return true; });
             }
         }
 

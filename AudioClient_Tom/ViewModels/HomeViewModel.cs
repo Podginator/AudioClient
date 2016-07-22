@@ -1,4 +1,5 @@
 ﻿using AudioClient_Tom.Models;
+using AudioClient_Tom.Networking;
 using AudioClient_Tom.Utilities;
 using AudioClient_Tom.Views;
 using System;
@@ -28,6 +29,23 @@ namespace AudioClient_Tom.ViewModels
         // The collection of Menu Items we wish to use is built
         public HomeViewModel()
         {
+
+            IServer manager = new SocketManager();
+            manager.Connect("localhost", 29054);
+            FileListHandler listHander = new FileListHandler();
+            manager.OnMessageIncoming += listHander.HandleMessageReceived;
+
+            EventAggregator.EventAggregator.Instance.RegisterListener<Packet>((packet) => {
+                
+                // Initially wait until we're connected.
+                while (!manager.isConnected()) { }
+
+                //Then, if we are, send the packet.
+                manager.Send(Packet.Serialize(packet));
+            });
+
+
+
             mItems = new List<MenuItemModel>();
             mItems.Add(new MenuItemModel { Name = "Songs", Control = new SongView() });
             mItems.Add(new MenuItemModel { Name = "Playlists", Control = new Button() });
@@ -37,7 +55,9 @@ namespace AudioClient_Tom.ViewModels
         }
 
 
-        // Used to swap a user control out.
+        /// <summary>
+        /// Used to swap a usercontrol in and out.
+        /// </summary>
         public Control UserControl {
             get
             {
@@ -53,6 +73,9 @@ namespace AudioClient_Tom.ViewModels
             }
         }  
 
+        /// <summary>
+        /// The String reference to the currently selected View. 
+        /// </summary>
         public String CurrentlySelected
         {
             get
@@ -69,6 +92,9 @@ namespace AudioClient_Tom.ViewModels
             }
         }
 
+        /// <summary>
+        /// A list of Menu Items.
+        /// </summary>
         public List<MenuItemModel> MenuItems
         {
             get
@@ -78,6 +104,10 @@ namespace AudioClient_Tom.ViewModels
         }
 
 
+        /// <summary>
+        /// swap the View Model
+        /// </summary>
+        /// <param name="view">The View Model we want to swap.</param>
         // Swap out the View
         private void swapViewModel(MenuItemModel view)
         {
@@ -88,13 +118,19 @@ namespace AudioClient_Tom.ViewModels
             }
         }
 
-        // We can swap if our Menu Item Control is not nul.
+        /// <summary>
+        /// IS the View Model swappable
+        /// </summary>
+        /// <param name="swappable">The Menu Item we want to swap with</param>
+        /// <returns></returns>
         private Boolean canSwap(MenuItemModel swappable)
         {
             return swappable != null && swappable.Control != null;
         }
 
-        // the Command to use to swap out a view model.
+        /// <summary>
+        /// The command to swap out the view model.
+        /// </summary>
         public ICommand updateViewInModel
         {
             get

@@ -48,8 +48,15 @@ namespace AudioClient_Tom.Networking
         /// <summary>
         /// Send to the server
         /// </summary>
-        /// <param name="sendedString"> Send to the Server</param>
-        void Send(string sendedString);
+        /// <param name="sendByte"> Send to the Server</param>
+        void Send(byte[] sendByte);
+
+        /// <summary>
+        /// Are we connected
+        /// </summary>
+        /// <returns>True if connected, false otherwise</returns>
+        bool isConnected();
+
 
         
     }

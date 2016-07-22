@@ -16,9 +16,7 @@ namespace AudioClient_Tom.Networking
 
     public class MessageHandlerArgs : EventArgs
     {
-        public byte[] Message { get; set; }
-
-        public int Size { get; set; }
+        public Packet Packet { get; set; }
 
         public IServer Sender { get; set; }
 

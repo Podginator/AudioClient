@@ -16,7 +16,7 @@ namespace AudioClient_Tom.Networking
         // Client  socket.
         public Socket workSocket = null;
         // Size of receive buffer.
-        public const int BufferSize = 1024;
+        public const int BufferSize = 1500;
         // Receive buffer.
         public byte[] buffer = new byte[BufferSize];
     }
@@ -121,17 +121,11 @@ namespace AudioClient_Tom.Networking
                 OnConnect.Invoke(this, connectedHandlerArgs);
                 mCanRetrieve = true;
 
-                StringBuilder builder = new StringBuilder();
-                builder.Append(4);
-                builder.Append("charcharchar");
-                Send(builder.ToString());
-                builder.Clear();
-
                 //When we've connected it's time to start retrieving data.
                 Receive();
             } catch (Exception e)
             {
-                IPEndPoint remoteEP = (IPEndPoint)ar.AsyncState;
+                IPEndPoint remoteEP = (IPEndPoint) ar.AsyncState;
                 //Unable to connect, wait and try again. 
                 Thread.Sleep(1000);
                 Connect(remoteEP.Address.ToString(), remoteEP.Port);
@@ -177,9 +171,6 @@ namespace AudioClient_Tom.Networking
         /// <param name="res"> The Async Result </param>
         private void ReceiveCallback(IAsyncResult res)
         {
-
-            Console.WriteLine("MSG RECEIVED");
-
             try
             {
                 StateObject state = (StateObject)res.AsyncState;
@@ -188,8 +179,7 @@ namespace AudioClient_Tom.Networking
                 if (bytesRead > 0)
                 {
                     MessageHandlerArgs args = new MessageHandlerArgs();
-                    args.Message = state.buffer;
-                    args.Size = bytesRead;
+                    args.Packet = Packet.Deserialize(state.buffer);
                     args.Sender = this;
 
                     OnMessageIncoming.Invoke(this, args);
@@ -211,11 +201,9 @@ namespace AudioClient_Tom.Networking
         /// Send to the server
         /// </summary>
         /// <param name="sendedString"> Send to the Server</param>
-        public void Send(String sendData)
+        public void Send(byte[] sendData)
         {
-            byte[] data = Encoding.UTF8.GetBytes(sendData);
-
-            mSocket.BeginSend(data, 0, data.Length, 0, new AsyncCallback(SendCallback), mSocket);
+            mSocket.BeginSend(sendData, 0, sendData.Length, 0, new AsyncCallback(SendCallback), mSocket);
         }
 
         /// <summary>
@@ -237,6 +225,11 @@ namespace AudioClient_Tom.Networking
             {
                 Console.WriteLine(e.ToString());
             }
+        }
+
+        public bool isConnected()
+        {
+            return mSocket.Connected;
         }
 
     }
