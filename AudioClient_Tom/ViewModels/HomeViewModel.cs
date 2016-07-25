@@ -1,5 +1,6 @@
 ﻿using AudioClient_Tom.Models;
 using AudioClient_Tom.Networking;
+using AudioClient_Tom.Networking.Handlers;
 using AudioClient_Tom.Utilities;
 using AudioClient_Tom.Views;
 using System;
@@ -33,7 +34,11 @@ namespace AudioClient_Tom.ViewModels
             IServer manager = new SocketManager();
             manager.Connect("localhost", 29054);
             FileListHandler listHander = new FileListHandler();
+            IncomingAudioHandler audioHandler = new IncomingAudioHandler();
+
             manager.OnMessageIncoming += listHander.HandleMessageReceived;
+            manager.OnMessageIncoming += audioHandler.HandleMessageReceived;
+
 
             EventAggregator.EventAggregator.Instance.RegisterListener<Packet>((packet) => {
                 

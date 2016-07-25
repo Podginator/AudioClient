@@ -1,4 +1,5 @@
-﻿using System;
+﻿using AudioClient_Tom.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -6,16 +7,13 @@ using System.Threading.Tasks;
 
 namespace AudioClient_Tom.EventAggregator.Event
 {
-    /// <summary>
-    /// More of a type def, than anything.
-    /// </summary>
-    class FileListRequest
+    class AudioReceivedEvent
     {
-
-
-        public FileListRequest()
+        public Song song
         {
-
+            get; set; 
         }
+
+        public byte[] data { get; set; }
     }
 }

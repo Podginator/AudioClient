@@ -16,7 +16,7 @@ namespace AudioClient_Tom.Networking
         // Client  socket.
         public Socket workSocket = null;
         // Size of receive buffer.
-        public const int BufferSize = 1500;
+        public const int BufferSize = 1034;
         // Receive buffer.
         public byte[] buffer = new byte[BufferSize];
     }
@@ -178,6 +178,10 @@ namespace AudioClient_Tom.Networking
 
                 if (bytesRead > 0)
                 {
+                    //Send an Ackonwledgement back.
+                    Packet ackn = new Packet(PacketType.ACKNOWLEDGE, 0, "");
+                    this.Send(Packet.Serialize(ackn));
+
                     MessageHandlerArgs args = new MessageHandlerArgs();
                     args.Packet = Packet.Deserialize(state.buffer);
                     args.Sender = this;

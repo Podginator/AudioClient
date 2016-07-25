@@ -68,6 +68,7 @@ namespace AudioClient_Tom.Models
             int rawsize = Marshal.SizeOf(song);
             byte[] rawdatas = new byte[rawsize];
             GCHandle handle = GCHandle.Alloc(rawdatas, GCHandleType.Pinned);
+
             IntPtr buffer = handle.AddrOfPinnedObject();
             Marshal.StructureToPtr(song, buffer, false);
             handle.Free();

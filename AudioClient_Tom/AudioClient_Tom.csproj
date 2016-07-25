@@ -67,7 +67,7 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="EventAggregator\EventAggregator.cs" />
-    <Compile Include="EventAggregator\Event\FileListRequest.cs" />
+    <Compile Include="EventAggregator\Event\AudioReceivedEvent.cs" />
     <Compile Include="EventAggregator\Event\FileListRetrievedEvent.cs" />
     <Compile Include="EventAggregator\Event\FriendUpdateEvent.cs" />
     <Compile Include="EventAggregator\Event\SongChangeEvent.cs" />
@@ -77,8 +77,9 @@
     <Compile Include="Models\User.cs" />
     <Compile Include="EventHandlers\IConnectedHandler.cs" />
     <Compile Include="EventHandlers\IMessageReceiveHandler.cs" />
-    <Compile Include="Networking\FileListHandler.cs" />
+    <Compile Include="Networking\Handlers\FileListHandler.cs" />
     <Compile Include="Networking\Handlers.cs" />
+    <Compile Include="Networking\Handlers\IncomingAudioHandler.cs" />
     <Compile Include="Networking\IMessageReceiveHandlers.cs" />
     <Compile Include="Networking\IServer.cs" />
     <Compile Include="Networking\Packet.cs" />
@@ -87,6 +88,7 @@
     <Compile Include="Utilities\AbstractObservable.cs" />
     <Compile Include="Utilities\ContainsFilter.cs" />
     <Compile Include="Utilities\IFilterOrganiser.cs" />
+    <Compile Include="Utilities\ProducerThread.cs" />
     <Compile Include="ViewModels\AudioControlViewModel.cs" />
     <Compile Include="ViewModels\HomeViewModel.cs" />
     <Compile Include="ViewModels\SongCollectionViewModel.cs" />

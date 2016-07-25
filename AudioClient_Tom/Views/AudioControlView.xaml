@@ -354,7 +354,15 @@
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
         <Grid Height="50" Grid.Column="2">
-            <ToggleButton Style="{StaticResource btnCustom}" Background="{x:Null}" BorderBrush="{x:Null}" Foreground="{x:Null}" Margin="85.5,11,85.5,11" Template="{DynamicResource btnHighlight}" />
+            <ToggleButton Style="{StaticResource btnCustom}" Background="{x:Null}" BorderBrush="{x:Null}" Foreground="{x:Null}" Margin="85.5,11,85.5,11" Template="{DynamicResource btnHighlight}">
+
+                <i:Interaction.Triggers>
+                    <i:EventTrigger EventName="Click">
+                        <i:InvokeCommandAction Command="{Binding PlaySongEvent}"/>
+                    </i:EventTrigger>
+                </i:Interaction.Triggers>
+
+            </ToggleButton>
             <Path Data="M123,105 L123,34.5 172.5,69.5 z" Margin="70.506,17.66,0,18.639" Stretch="Fill" Stroke="White" Fill="White" HorizontalAlignment="Left" Width="8.989" RenderTransformOrigin="0.5,0.5">
                 <Path.RenderTransform>
                     <TransformGroup>
