@@ -27,6 +27,9 @@ namespace AudioClient_Tom.Networking
     [StructLayout(LayoutKind.Sequential)]
     public class Packet
     {
+
+        public const int MAX_PACKET_SIZE = 1024;
+
         private Int32 mType;
 
         private Int32 mSize;
@@ -134,7 +137,7 @@ namespace AudioClient_Tom.Networking
         { 
             byte[] typeBytes = BitConverter.GetBytes(packet.mType);
             byte[] sizeBytes = BitConverter.GetBytes(packet.mSize);
-            int arrSize = typeBytes.Length + sizeBytes.Length + packet.packetData.Length;
+            int arrSize = typeBytes.Length + sizeBytes.Length + Packet.MAX_PACKET_SIZE;
             byte[] byteArray = new byte[arrSize];
 
             int written = 0; 
