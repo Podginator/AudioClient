@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Net;
 using System.Net.Sockets;
@@ -13,12 +14,19 @@ namespace AudioClient_Tom.Networking
     // State object for reading client data asynchronously
     public class StateObject
     {
+        public StateObject(int size)
+        {
+            this.size = size;
+            buffer = new byte[size];
+        }
+
+        public int size = 0;
+
         // Client  socket.
         public Socket workSocket = null;
-        // Size of receive buffer.
-        public const int BufferSize = 1034;
+
         // Receive buffer.
-        public byte[] buffer = new byte[BufferSize];
+        public byte[] buffer;
     }
 
     /// <summary>
@@ -64,6 +72,17 @@ namespace AudioClient_Tom.Networking
             //Create the Socket.
             mSocket = new Socket(AddressFamily.InterNetwork, 
                 SocketType.Stream, ProtocolType.Tcp);
+
+            // Set up socket.
+            mSocket.ExclusiveAddressUse = true;
+            mSocket.LingerState = new LingerOption(true, 10);
+            mSocket.NoDelay = true;
+            mSocket.ReceiveBufferSize = 8192;
+            mSocket.ReceiveTimeout = 1000;
+            mSocket.SendBufferSize = 8192;
+            mSocket.SendTimeout = 1000;
+
+
             // Instantiate the handlers. 
             OnConnect += (e, b) => { };
             OnDisconnect += (e, b) => { };
@@ -105,7 +124,7 @@ namespace AudioClient_Tom.Networking
             //Attempt to disconnect from the Client. 
             if (mConnected)
             {
-                StateObject state = new StateObject();
+                StateObject state = new StateObject(4);
                 state.workSocket = mSocket;
                 mSocket.BeginDisconnect(false, Disconnected, state);
             }
@@ -154,9 +173,10 @@ namespace AudioClient_Tom.Networking
         {
             try
             {
-                StateObject state = new StateObject();
+                // Initially get the size.
+                StateObject state = new StateObject(4);
                 state.workSocket = mSocket;
-                mSocket.BeginReceive(state.buffer, 0, StateObject.BufferSize, 0,
+                mSocket.BeginReceive(state.buffer, 0, state.size, 0,
                     new AsyncCallback(ReceiveCallback), state);
             }
             catch (Exception e)
@@ -175,25 +195,31 @@ namespace AudioClient_Tom.Networking
             {
                 StateObject state = (StateObject)res.AsyncState;
                 int bytesRead = mSocket.EndReceive(res);
+                int size = BitConverter.ToInt32(state.buffer, 0);
 
-                if (bytesRead > 0)
+                byte[] buffer = new byte[size + sizeof(int)];
+                //Continue to read. 
+                int received = mSocket.Receive(buffer, size + sizeof(int), SocketFlags.None);
+
+
+                if (received > 0)
                 {
-                    //Send an Ackonwledgement back.
-                    Packet ackn = new Packet(PacketType.ACKNOWLEDGE, 0, "");
-                    this.Send(Packet.Serialize(ackn));
+                    byte[] packetBuffer = new byte[received + state.size];
+                    Array.Copy(state.buffer, packetBuffer, state.size);
+                    Array.Copy(buffer, 0, packetBuffer, 4, received);
 
                     MessageHandlerArgs args = new MessageHandlerArgs();
-                    args.Packet = Packet.Deserialize(state.buffer);
+                    args.Packet = Packet.Deserialize(packetBuffer);
                     args.Sender = this;
 
                     OnMessageIncoming.Invoke(this, args);
                 }
 
-                // if we can still retrieve attempt to retrieve again. 
                 if (mCanRetrieve)
                 {
                     Receive();
                 }
+            
             }
             catch (Exception e)
             {
@@ -207,7 +233,12 @@ namespace AudioClient_Tom.Networking
         /// <param name="sendedString"> Send to the Server</param>
         public void Send(byte[] sendData)
         {
-            mSocket.BeginSend(sendData, 0, sendData.Length, 0, new AsyncCallback(SendCallback), mSocket);
+            try {
+                mSocket.BeginSend(sendData, 0, sendData.Length, 0, new AsyncCallback(SendCallback), mSocket);
+            } catch (Exception e)
+            {
+                Console.Out.WriteLine(e.ToString());
+            }
         }
 
         /// <summary>

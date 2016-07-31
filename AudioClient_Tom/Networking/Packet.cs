@@ -31,9 +31,9 @@ namespace AudioClient_Tom.Networking
 
         public const int MAX_PACKET_SIZE = 1024;
 
-        private Int32 mType;
-
         private Int32 mSize;
+
+        private Int32 mType;
 
         [MarshalAs(UnmanagedType.ByValArray, SizeConst = 1024)]
         private byte[] packetData;
@@ -141,15 +141,16 @@ namespace AudioClient_Tom.Networking
             int arrSize = typeBytes.Length + sizeBytes.Length + Packet.MAX_PACKET_SIZE;
             byte[] byteArray = new byte[arrSize];
 
-            int written = 0; 
-            for (int i = 0; i < typeBytes.Length; i++)
-            {
-                byteArray[written++] = typeBytes[i];
-            }
+            int written = 0;
 
             for (int i = 0; i < sizeBytes.Length; i++)
             {
                 byteArray[written++] = sizeBytes[i];
+            }
+
+            for (int i = 0; i < typeBytes.Length; i++)
+            {
+                byteArray[written++] = typeBytes[i];
             }
 
             for (int i = 0; i < packet.packetData.Length; i++)
