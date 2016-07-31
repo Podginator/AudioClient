@@ -21,13 +21,6 @@ namespace AudioClient_Tom.ViewModels
     class AudioControlViewModel : AbstractObservable
     {
 
-
-        /// <summary>
-        /// The Bytes of the List. Concurrent as we push this on from threads and
-        /// wish to avoid synchronicity issues. 
-        /// </summary>
-        private ConcurrentQueue<byte> byteList;
-
         /// <summary>
         /// The Memory stream we wish 
         /// </summary>
@@ -47,7 +40,6 @@ namespace AudioClient_Tom.ViewModels
         public AudioControlViewModel()
         {
 
-            byteList = new ConcurrentQueue<byte>();
             ms = new ProducerConsumerStream();
  
             SongTitle = "";
@@ -55,7 +47,6 @@ namespace AudioClient_Tom.ViewModels
 
             EventAggregator.EventAggregator.Instance.RegisterListener<SongChangeEvent>((songEvt) =>
             {
-                byteList = new ConcurrentQueue<byte>();
                 SongTitle = songEvt.Song.SongTitle;
                 ArtistName = songEvt.Song.ArtistName;
                 this.FirePropertyChanged("SongTitle");
@@ -76,11 +67,6 @@ namespace AudioClient_Tom.ViewModels
                 {
                     ms.Write(audioEvt.data, 0, audioEvt.data.Length);
                 }
-                foreach (byte data in audioEvt.data)
-                {
-                    byteList.Enqueue(data);
-  
-                } 
             });
         }
 

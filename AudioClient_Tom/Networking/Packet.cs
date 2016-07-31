@@ -14,12 +14,13 @@ namespace AudioClient_Tom.Networking
     {
         public const int NO_OPP = 0;
         public const int ACKNOWLEDGE = 1 << 1;
-        public const int EXIT = 1 << 2;
+        public const int TRACK = 1 << 2;
         public const int AUDIO = 1 << 3;
-        public const int FILELIST = 1 << 4;
-        public const int TRACK = 1 << 5;
-        public const int CLOSE = 1 << 6;
-        public const int FRIEND = 1 << 7;
+        public const int HEADER = 1 << 4;
+        public const int FILELIST = 1 << 5;
+        public const int FRIEND_REQ = 1 << 6;
+        public const int USER_UPDATE = 1 << 7;
+        public const int EXIT = 1 << 8;
     };
 
 
