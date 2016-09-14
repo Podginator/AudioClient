@@ -1,12 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
 using System.Net;
 using System.Net.Sockets;
-using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
 
 namespace AudioClient_Tom.Networking
 {
@@ -75,7 +70,6 @@ namespace AudioClient_Tom.Networking
 
             // Set up socket.
             mSocket.ExclusiveAddressUse = true;
-            mSocket.LingerState = new LingerOption(true, 10);
             mSocket.NoDelay = true;
             mSocket.ReceiveBufferSize = 8192;
             mSocket.ReceiveTimeout = 1000;
@@ -197,19 +191,19 @@ namespace AudioClient_Tom.Networking
                 int bytesRead = mSocket.EndReceive(res);
                 int size = BitConverter.ToInt32(state.buffer, 0);
 
-                byte[] buffer = new byte[size + sizeof(int)];
+                byte[] buffer = new byte[size + (2 * sizeof(int))];
                 //Continue to read. 
-                int received = mSocket.Receive(buffer, size + sizeof(int), SocketFlags.None);
+                int received = mSocket.Receive(buffer, size + ( 2 * sizeof(int)), SocketFlags.None);
 
 
                 if (received > 0)
                 {
-                    byte[] packetBuffer = new byte[received + state.size];
-                    Array.Copy(state.buffer, packetBuffer, state.size);
-                    Array.Copy(buffer, 0, packetBuffer, 4, received);
+                    byte[] dataBuffer = new byte[received + state.size];
+                    Array.Copy(state.buffer, dataBuffer, state.size);
+                    Array.Copy(buffer, 0, dataBuffer, 4, received);
 
                     MessageHandlerArgs args = new MessageHandlerArgs();
-                    args.Packet = Packet.Deserialize(packetBuffer);
+                    args.data= dataBuffer;
                     args.Sender = this;
 
                     OnMessageIncoming.Invoke(this, args);

@@ -6,11 +6,8 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
+using System.Runtime.InteropServices;
 using System.Windows.Input;
-using System.Windows.Threading;
 
 namespace AudioClient_Tom.ViewModels
 {
@@ -21,7 +18,7 @@ namespace AudioClient_Tom.ViewModels
         public delegate String SongConvert(SongViewModel model);
 
         // A collection of songs. 
-        private ObservableCollection<SongViewModel> mSongs;
+        private List<SongViewModel> mSongs;
 
         // The currently selected song.
         private SongViewModel mSelectedSong; 
@@ -50,7 +47,7 @@ namespace AudioClient_Tom.ViewModels
         /// </summary>
         public SongCollectionViewModel()
         {
-            mSongs = new ObservableCollection<SongViewModel>();
+            mSongs = new List<SongViewModel>();
 
             mConverters = new Dictionary<String, SongConvert>();
             mConverters.Add("Song Title", e => e.SongTitle);
@@ -64,28 +61,8 @@ namespace AudioClient_Tom.ViewModels
             SelectedIndex = -1;
 
 
-            EventAggregator.EventAggregator.Instance.RaiseEvent<Packet>(new Packet(PacketType.FILELIST, 0, ""));
-            //Listen for Song Request Events.
-            EventAggregator.EventAggregator.Instance.RegisterListener<SongRequestEvent>(SongRequeustListener);
-
-            //Also register for File List Retrieved Events to update the view. 
-            EventAggregator.EventAggregator.Instance.RegisterListener<FileListRetrievedEvent>(FileListRetrievedListener);
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        public String ConverterKey
-        {
-            get
-            {
-                return mConverterKey;
-            }
-            set
-            {
-                mConverterKey = value;
-                FirePropertyChanged("FilteredCollection");
-            }
+            PacketManager.sharedInstance().SendPacket(new Packet(PacketType.FILELIST, 0, ""), FileListDelegate);
+                
         }
 
 
@@ -126,7 +103,7 @@ namespace AudioClient_Tom.ViewModels
         /// <summary>
         /// The full Song Collection.
         /// </summary>
-        public ObservableCollection<SongViewModel> SongCollection
+        public List<SongViewModel> SongCollection
         {
             get { return mSongs; }
         }
@@ -251,20 +228,45 @@ namespace AudioClient_Tom.ViewModels
         }
 
 
-        private void FileListRetrievedListener(FileListRetrievedEvent fileEvt)
+        private void FileListDelegate(Packet filePacket)
         {
-            // Use this to then update the Song Collection, and alter the Filtered 
-            // Collection.
-            Application.Current.Dispatcher.Invoke((Action)(() =>
+            int songSize = Marshal.SizeOf(typeof(Song));
+
+            var rest = filePacket.Data;
+            int left = filePacket.Size;
+            int written = 0;
+            do
             {
-                //Add each song in the Song Collection.
-                foreach (Song song in fileEvt.SongCollection)
+                var objectData = rest.Skip(written).Take(songSize).ToArray();
+                Song song = Song.Deserialize(objectData);
+
+                if (song != null)
                 {
-                    SongCollection.Add(new SongViewModel(song));
+                    mSongs.Add(new SongViewModel(song));
                 }
-                FirePropertyChanged("FilteredCollection");
-            }));
-        } 
+
+                written += songSize;
+            }
+            while (written < left);
+
+            FirePropertyChanged("SongCollection");
+        }
+
+    /// <summary>
+    /// 
+    /// </summary>
+    public String ConverterKey
+    {
+        get
+        {
+            return mConverterKey;
+        }
+        set
+        {
+            mConverterKey = value;
+            FirePropertyChanged("FilteredCollection");
+        }
+    } 
 
         /// <summary>
         /// Push A Song Changed event onto the Event Aggregator. 

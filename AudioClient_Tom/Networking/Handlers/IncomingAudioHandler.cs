@@ -23,13 +23,13 @@ namespace AudioClient_Tom.Networking.Handlers
 
         public void HandleMessageReceived(object sender, MessageHandlerArgs args)
         {
-            if (args.Packet.Type == PacketType.AUDIO)
+           // if (args.Packet.Type == PacketType.AUDIO)
             {
                 //If we're an audio packet then just package me up and send me on my way. 
                 AudioReceivedEvent evt = new AudioReceivedEvent();
                 evt.song = song;
-                evt.data = new byte[args.Packet.Size];
-                Array.Copy(args.Packet.Data, 0, evt.data, 0, args.Packet.Size);
+             //   evt.data = new byte[args.Packet.Size];
+               // Array.Copy(args.Packet.Data, 0, evt.data, 0, args.Packet.Size);
                 EventAggregator.EventAggregator.Instance.RaiseEvent<AudioReceivedEvent>(evt);
             }
         }

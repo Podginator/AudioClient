@@ -26,3 +26,5 @@ C:\Users\Podginator\Documents\GitHub\AudioClient\AudioClient_Tom\obj\Debug\Views
 C:\Users\Podginator\Documents\GitHub\AudioClient\AudioClient_Tom\obj\Debug\AudioClient_Tom.g.resources
 C:\Users\Podginator\Documents\GitHub\AudioClient\AudioClient_Tom\obj\Debug\AudioClient_Tom.Properties.Resources.resources
 C:\Users\Podginator\Documents\GitHub\AudioClient\AudioClient_Tom\obj\Debug\AudioClient_Tom.csproj.GenerateResource.Cache
+C:\Users\Podginator\Documents\GitHub\AudioClient\AudioClient_Tom\obj\Debug\Views\SettingsView.g.cs
+C:\Users\Podginator\Documents\GitHub\AudioClient\AudioClient_Tom\obj\Debug\Views\SettingsView.baml

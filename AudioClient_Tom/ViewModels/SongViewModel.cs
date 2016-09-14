@@ -71,7 +71,7 @@ namespace AudioClient_Tom.ViewModels
             get
             {
                 TimeSpan seconds = TimeSpan.FromSeconds(LengthSeconds);
-                return seconds.ToString(@"mm\:s");
+                return seconds.ToString(@"mm\:ss");
             }
         }
 

@@ -15,32 +15,32 @@ namespace AudioClient_Tom.Networking
     {
         public void HandleMessageReceived(object sender, MessageHandlerArgs args)
         {
-            if (args.Packet.Type == PacketType.FILELIST) 
+            //if (args.Packet.Type == PacketType.FILELIST) 
             {
                 {
                     int songSize = Marshal.SizeOf(typeof(Song));
                     //Convert down to new byte array of Length - 1.
-                    var rest = args.Packet.Data;
+              //      var rest = args.Packet.Data;
 
                     List<Song> songLists = new List<Song>();
-                    int left = args.Packet.Size;
+                //    int left = args.Packet.Size;
                     int written = 0;
                     do
                     {
-                        var objectData = rest.Skip(written).Take(songSize).ToArray();
-                        Song song = Song.Deserialize(objectData);
+                        //var objectData = rest.Skip(written).Take(songSize).ToArray();
+                        //Song song = Song.Deserialize(objectData);
 
-                        if (song != null)
-                        {
-                            songLists.Add(song);
-                        }
+                        //if (song != null)
+                        //{
+                          //  songLists.Add(song);
+                        //}
                         
-                        written += songSize;
+                        //written += songSize;
                     }
-                    while (written < left);
+                    while (written < 4);
 
-                    FileListRetrievedEvent evt = new FileListRetrievedEvent(songLists);
-                    EventAggregator.EventAggregator.Instance.RaiseEvent<FileListRetrievedEvent>(evt);
+                    //FileListRetrievedEvent evt = new FileListRetrievedEvent(songLists);
+                    //EventAggregator.EventAggregator.Instance.RaiseEvent<FileListRetrievedEvent>(evt);
                 }
 
             }

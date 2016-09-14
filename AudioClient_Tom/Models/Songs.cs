@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace AudioClient_Tom.Models
 {
-
+    [Serializable]
     [StructLayout(LayoutKind.Sequential)]
     public class Song
     {

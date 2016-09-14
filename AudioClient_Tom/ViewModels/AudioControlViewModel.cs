@@ -2,18 +2,10 @@
 using AudioClient_Tom.Models;
 using AudioClient_Tom.Networking;
 using AudioClient_Tom.Utilities;
-using AudioClient_Tom.Views;
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
 using System.IO;
-using System.Linq;
 using System.Media;
 using System.Runtime.InteropServices;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Controls;
-using System.Collections.Concurrent;
 using System.Windows.Input;
 
 namespace AudioClient_Tom.ViewModels
@@ -53,21 +45,13 @@ namespace AudioClient_Tom.ViewModels
                 this.FirePropertyChanged("ArtistName");
 
                 //Request a packet with this song. 
-                EventAggregator.EventAggregator.Instance.RaiseEvent(
+                PacketManager.sharedInstance().SendPacket(
                     new Packet(PacketType.TRACK, Marshal.SizeOf(songEvt.Song), Song.Serialize(songEvt.Song)));
 
 
             });
 
             
-
-            EventAggregator.EventAggregator.Instance.RegisterListener<AudioReceivedEvent>((audioEvt) =>
-            {
-                lock (BufferLock)
-                {
-                    ms.Write(audioEvt.data, 0, audioEvt.data.Length);
-                }
-            });
         }
 
 
@@ -84,6 +68,12 @@ namespace AudioClient_Tom.ViewModels
         public String ArtistName
         {
             get; set;
+        }
+
+
+        public void GetSongData(Packet packet)
+        {
+
         }
 
         /// <summary>
@@ -106,10 +96,6 @@ namespace AudioClient_Tom.ViewModels
             }
         }
 
-
-
-
-
         /// <summary>
         /// The event to send the song. Calls to the Event Aggregator.
         /// </summary>
@@ -119,6 +105,13 @@ namespace AudioClient_Tom.ViewModels
             {
                 return new RelayCommand(() =>
                 {
+                    using (FileStream file = new FileStream("C:\\Users\\Podginator\\Documents\\GitHub\\File.wav", FileMode.Create, System.IO.FileAccess.Write))
+                    {
+                        byte[] bytes = new byte[ms.Length];
+                        ms.Read(bytes, 0, (int)ms.Length);
+                        file.Write(bytes, 0, bytes.Length);
+                        ms.Close();
+                    }
                     ms.ReadPosition = 0;
                     soundPlayer = new SoundPlayer(ms);
                     soundPlayer.Play();

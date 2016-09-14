@@ -73,6 +73,7 @@
     <Compile Include="EventAggregator\Event\SongChangeEvent.cs" />
     <Compile Include="EventAggregator\Event\SongRequestEvent.cs" />
     <Compile Include="Models\MenuItemModel.cs" />
+    <Compile Include="Models\Settings.cs" />
     <Compile Include="Models\Songs.cs" />
     <Compile Include="Models\User.cs" />
     <Compile Include="EventHandlers\IConnectedHandler.cs" />
@@ -88,10 +89,12 @@
     <Compile Include="Utilities\AbstractObservable.cs" />
     <Compile Include="Utilities\ContainsFilter.cs" />
     <Compile Include="Utilities\IFilterOrganiser.cs" />
+    <Compile Include="Utilities\PacketManager.cs" />
     <Compile Include="Utilities\ProducerThread.cs" />
     <Compile Include="ViewModels\AudioControlViewModel.cs" />
     <Compile Include="ViewModels\HomeViewModel.cs" />
     <Compile Include="ViewModels\SongCollectionViewModel.cs" />
+    <Compile Include="ViewModels\SettingViewModel.cs" />
     <Compile Include="ViewModels\SongViewModel.cs" />
     <Compile Include="Views\AudioControlView.xaml.cs">
       <DependentUpon>AudioControlView.xaml</DependentUpon>
@@ -101,6 +104,9 @@
     </Compile>
     <Compile Include="Views\HomeView.xaml.cs">
       <DependentUpon>HomeView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\SettingsView.xaml.cs">
+      <DependentUpon>SettingsView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\SongView.xaml.cs">
       <DependentUpon>SongView.xaml</DependentUpon>
@@ -126,6 +132,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\HomeView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\SettingsView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

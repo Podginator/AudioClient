@@ -33,29 +33,13 @@ namespace AudioClient_Tom.ViewModels
 
             IServer manager = new SocketManager();
             manager.Connect("localhost", 29054);
-            FileListHandler listHander = new FileListHandler();
-            IncomingAudioHandler audioHandler = new IncomingAudioHandler();
-
-            manager.OnMessageIncoming += listHander.HandleMessageReceived;
-            manager.OnMessageIncoming += audioHandler.HandleMessageReceived;
-
-
-            EventAggregator.EventAggregator.Instance.RegisterListener<Packet>((packet) => {
-                
-                // Initially wait until we're connected.
-                while (!manager.isConnected()) { }
-
-                //Then, if we are, send the packet.
-                manager.Send(Packet.Serialize(packet));
-            });
-
-
+            PacketManager.createInstance(manager);
 
             mItems = new List<MenuItemModel>();
             mItems.Add(new MenuItemModel { Name = "Songs", Control = new SongView() });
             mItems.Add(new MenuItemModel { Name = "Playlists", Control = new Button() });
-            mItems.Add(new MenuItemModel { Name = "Friends", Control = new Button() });
             mItems.Add(new MenuItemModel { Name = "Most Popular", Control = new Button() });
+            mItems.Add(new MenuItemModel { Name = "Settings", Control = new SettingsView() });
             swapViewModel(mItems[0]);
         }
 

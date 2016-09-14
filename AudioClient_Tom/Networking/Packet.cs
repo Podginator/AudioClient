@@ -13,14 +13,12 @@ namespace AudioClient_Tom.Networking
     public static class PacketType
     {
         public const int NO_OPP = 0;
-        public const int ACKNOWLEDGE = 1 << 1;
-        public const int TRACK = 1 << 2;
-        public const int AUDIO = 1 << 3;
-        public const int HEADER = 1 << 4;
-        public const int FILELIST = 1 << 5;
-        public const int FRIEND_REQ = 1 << 6;
-        public const int USER_UPDATE = 1 << 7;
-        public const int EXIT = 1 << 8;
+        public const int TRACK = 1 << 1;
+        public const int AUDIO = 1 << 2;
+        public const int FILELIST = 1 << 3;
+        public const int FRIEND_REQ = 1 << 4;
+        public const int SETTINGS = 1 << 5;
+        public const int END = 1 << 6;
     };
 
 
@@ -34,6 +32,8 @@ namespace AudioClient_Tom.Networking
         private Int32 mSize;
 
         private Int32 mType;
+
+        private Int32 mId;
 
         [MarshalAs(UnmanagedType.ByValArray, SizeConst = 1024)]
         private byte[] packetData;
@@ -82,6 +82,19 @@ namespace AudioClient_Tom.Networking
             set
             {
                 mSize = value;
+            }
+        }
+
+        public Int32 ID
+        {
+            get
+            {
+                return mId;
+            }
+
+            set
+            {
+                mId = value;
             }
         }
 
@@ -138,7 +151,8 @@ namespace AudioClient_Tom.Networking
         { 
             byte[] typeBytes = BitConverter.GetBytes(packet.mType);
             byte[] sizeBytes = BitConverter.GetBytes(packet.mSize);
-            int arrSize = typeBytes.Length + sizeBytes.Length + Packet.MAX_PACKET_SIZE;
+            byte[] idBytes = BitConverter.GetBytes(packet.ID);
+            int arrSize = typeBytes.Length + sizeBytes.Length + idBytes.Length + Packet.MAX_PACKET_SIZE;
             byte[] byteArray = new byte[arrSize];
 
             int written = 0;
@@ -146,6 +160,11 @@ namespace AudioClient_Tom.Networking
             for (int i = 0; i < sizeBytes.Length; i++)
             {
                 byteArray[written++] = sizeBytes[i];
+            }
+
+            for (int i = 0; i < idBytes.Length; i++ )
+            {
+                byteArray[written++] = idBytes[i];
             }
 
             for (int i = 0; i < typeBytes.Length; i++)

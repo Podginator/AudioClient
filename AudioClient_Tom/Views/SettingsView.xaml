@@ -1,0 +1,50 @@
+﻿<UserControl x:Class="AudioClient_Tom.Views.SettingsView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:AudioClient_Tom.Views"
+             xmlns:s="clr-namespace:System;assembly=mscorlib"
+             xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
+             xmlns:viewModels="clr-namespace:AudioClient_Tom.ViewModels"
+             xmlns:Themes="clr-namespace:Microsoft.Windows.Themes;assembly=PresentationFramework.Aero2"
+             mc:Ignorable="d" 
+             d:DesignHeight="365" d:DesignWidth="495" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+
+    <UserControl.DataContext>
+        <viewModels:SettingsViewModel/>
+    </UserControl.DataContext>
+
+    <Grid  Background="#FF1E1E1E">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="76*"/>
+            <ColumnDefinition Width="346*"/>
+            <ColumnDefinition Width="76*"/>
+        </Grid.ColumnDefinitions>
+        <Grid Grid.Column="1" Margin="0,0,0,0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="86*"/>
+                <ColumnDefinition Width="86*"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="36.5*"/>
+                <RowDefinition Height="36.5*"/>
+                <RowDefinition Height="36.5*"/>
+                <RowDefinition Height="36.5*"/>
+                <RowDefinition Height="36.5*"/>
+                <RowDefinition Height="36.5*"/>
+                <RowDefinition Height="36.5*"/>
+                <RowDefinition Height="36.5*"/>
+                <RowDefinition Height="36.5*"/>
+                <RowDefinition Height="36.5*"/>
+            </Grid.RowDefinitions>
+            <Label x:Name="ShareActivity" Content="Share Activity:" HorizontalAlignment="Left" Margin="10,3.2,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.455,2.188" Foreground="White" Grid.Row="1" Width="147" FontFamily="Yu Gothic Light"/>
+            <Label x:Name="ShareName" Content="Sharing Name: " HorizontalAlignment="Left" Margin="10,3.2,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.455,2.188" Foreground="White" Grid.Row="2" Width="147" FontFamily="Yu Gothic Light"/>
+            <Label x:Name="ShareName_Copy" Content="Request Album Art:" HorizontalAlignment="Left" Margin="10,3.2,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.455,2.188" Foreground="White" Grid.Row="3" Width="147" FontFamily="Yu Gothic Light" Grid.RowSpan="2"/>
+            <CheckBox x:Name="requestAlbum" Grid.Column="1" HorizontalAlignment="Left" Margin="26,9.6,0,0" Grid.Row="1" VerticalAlignment="Top" IsChecked="{Binding ShareActivity}"/>
+            <CheckBox x:Name="requestAlbumbCheckbox" Grid.Column="1" HorizontalAlignment="Left" Margin="27,9.6,0,0" Grid.Row="3" VerticalAlignment="Top"  IsChecked="{Binding GetAlbumArt}"/>
+            <TextBox x:Name="textBox" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" Grid.Column="1" Margin="26,6.2,0,0" Grid.Row="2" Text="{Binding ShareName}"/>
+            <Button x:Name="applyButton" Content="Apply" HorizontalAlignment="Left" Margin="88,0,0,5.8" Grid.Row="9" Width="84" Height="25" Grid.Column="1" Command="{Binding ApplySettingCommand}"/>
+        </Grid>
+    </Grid>
+</UserControl>
