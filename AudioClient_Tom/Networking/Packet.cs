@@ -16,7 +16,7 @@ namespace AudioClient_Tom.Networking
         public const int TRACK = 1 << 1;
         public const int AUDIO = 1 << 2;
         public const int FILELIST = 1 << 3;
-        public const int FRIEND_REQ = 1 << 4;
+        public const int IMAGE = 1 << 4;
         public const int SETTINGS = 1 << 5;
         public const int END = 1 << 6;
     };

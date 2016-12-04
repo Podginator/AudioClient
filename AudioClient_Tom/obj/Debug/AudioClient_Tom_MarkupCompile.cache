@@ -4,16 +4,16 @@
 winexe
 C#
 .cs
-C:\Users\Podginator\Documents\GitHub\AudioClient\AudioClient_Tom\obj\Debug\
+J:\OtherSystems\AudioClient\AudioClient_Tom\obj\Debug\
 AudioClient_Tom
 none
 false
 DEBUG;TRACE
-C:\Users\Podginator\Documents\GitHub\AudioClient\AudioClient_Tom\App.xaml
+J:\OtherSystems\AudioClient\AudioClient_Tom\App.xaml
 61820619831
 
 401285068762
-18-351629260
+181597371098
 MainWindow.xaml;Views\AudioControlView.xaml;Views\FriendView.xaml;Views\HomeView.xaml;Views\SettingsView.xaml;Views\SongView.xaml;
 
 False

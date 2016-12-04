@@ -46,8 +46,7 @@ namespace AudioClient_Tom.ViewModels
 
                 //Request a packet with this song. 
                 PacketManager.sharedInstance().SendPacket(
-                    new Packet(PacketType.TRACK, Marshal.SizeOf(songEvt.Song), Song.Serialize(songEvt.Song)));
-
+                    new Packet(PacketType.TRACK, Marshal.SizeOf(songEvt.Song), Song.Serialize(songEvt.Song)), GetSongData);
 
             });
 
@@ -73,7 +72,13 @@ namespace AudioClient_Tom.ViewModels
 
         public void GetSongData(Packet packet)
         {
-
+            if (packet.Type == PacketType.AUDIO)
+            {
+                lock (BufferLock)
+                {
+                    ms.Write(packet.Data, 0, packet.Data.Length);
+                }
+            }
         }
 
         /// <summary>
@@ -105,13 +110,7 @@ namespace AudioClient_Tom.ViewModels
             {
                 return new RelayCommand(() =>
                 {
-                    using (FileStream file = new FileStream("C:\\Users\\Podginator\\Documents\\GitHub\\File.wav", FileMode.Create, System.IO.FileAccess.Write))
-                    {
-                        byte[] bytes = new byte[ms.Length];
-                        ms.Read(bytes, 0, (int)ms.Length);
-                        file.Write(bytes, 0, bytes.Length);
-                        ms.Close();
-                    }
+              
                     ms.ReadPosition = 0;
                     soundPlayer = new SoundPlayer(ms);
                     soundPlayer.Play();
